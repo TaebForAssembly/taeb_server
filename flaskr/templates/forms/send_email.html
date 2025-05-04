@@ -11,6 +11,10 @@
     <label for="content">Password</label>
     <input type="content" name="content" id="content" required>
     <input type="submit" value="Send to List">
-    <input type="submit" formaction="mailing_list/preview" value="Preview">
+    <input type="submit" formaction="mailing_list/preview" formtarget="_blank">
+  </form>
+
+  <form method="post" action="/logout">
+    <button type="submit">Log-out</button>
   </form>
 {% endblock %}

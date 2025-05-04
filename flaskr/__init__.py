@@ -1,8 +1,8 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, jsonify
 from .db import get_db
-
-
+import resend
+from gotrue.errors import AuthApiError
 
 def create_app(test_config=None):
     # create and configure the app
@@ -65,13 +65,25 @@ def create_app(test_config=None):
     
     @app.route('/login', methods=["POST"])
     def login_post():
-        data = request.form
-        email = data.get("email")
-        password = data.get("password")
-        return {
-            "email": email,
-            "password": password
-        }
+        # get data
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        supabase = get_db()
+
+        try:
+            supabase.auth.sign_in_with_password(
+                {
+                    "email": email, 
+                    "password": password,
+                }
+            )
+
+            return redirect("/mailing_list")
+        except AuthApiError:
+            return {
+                "success": False
+            }
 
     @app.route('/mailing_list', methods=["GET"])
     def send_email():
@@ -79,7 +91,13 @@ def create_app(test_config=None):
 
     @app.route('/mailing_list/preview', methods=["POST"])
     def check_email():
-        pass
-
+        content = request.form.get("content")
+        return render_template("email/mailing_list.html", name="John Smith", content=content)
     
+    @app.route('/logout', methods=["POST"])
+    def logout():
+        supabase = get_db()
+        supabase.auth.sign_out()
+        return redirect("/login")
+
     return app
