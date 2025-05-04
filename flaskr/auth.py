@@ -1,34 +1,32 @@
-from flask import Blueprint, render_template, request, g
+from flask import Blueprint, render_template, request, redirect
 from supabase import create_client, Client
+from gotrue.errors import AuthApiError
 from .db import get_db
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired, Email
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
 
 bp = Blueprint('auth', __name__)
 
-@bp.route('/login', methods=["GET"])
+@bp.route('/login', methods=["GET", "POST"])
 def login():
-    return render_template('authentication/login.html')
-
-@bp.route('/login', methods=["POST"])
-def login_post():
-    # get data
-    email = request.form.get("email")
-    password = request.form.get("password")
-    
-    supabase = get_db()
-
-    try:
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        supabase = get_db()
         supabase.auth.sign_in_with_password(
             {
                 "email": email, 
                 "password": password,
             }
         )
-
         return redirect("/mailing_list")
-    except AuthApiError:
-        return {
-            "success": False
-        }
+    return render_template('authentication/login.html', form=form)
 
 @bp.route('/logout', methods=["POST"])
 def logout():

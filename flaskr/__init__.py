@@ -1,8 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, jsonify
-from .db import get_db
-import resend
-from gotrue.errors import AuthApiError
+from flask import Flask
 
 def create_app(test_config=None):
     # create and configure the app
