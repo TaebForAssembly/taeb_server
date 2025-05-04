@@ -24,80 +24,10 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/', methods=["GET"])
-    def email():
-        content = request.args.get("content")
-        social_links = [
-            # facebook
-            {
-                "url": "https://www.facebook.com/people/Freshta-Taeb/pfbid0pbEhVeAoyC1zNs4txi2AXAyxEFzweoWXjc68M7W6dDjDsDycDqwCqJaZCSGrsS7hl/",
-                "image": "https://img.icons8.com/?size=30&id=118466&format=png&color=012852"
-            },
-            # instagram
-            {
-                "url": "https://www.instagram.com/taeb4assembly/",
-                "image": "https://img.icons8.com/?size=30&id=32309&format=png&color=012852"
-            },
-            # linkedin
-            {
-                "url": "https://www.linkedin.com/company/taeb-for-assembly/posts/?feedView=all",
-                "image": "https://img.icons8.com/?size=30&id=8808&format=png&color=012852"
-            },
-            # tiktok
-            {
-                "url": "https://www.tiktok.com/@taeb4assembly",
-                "image": "https://img.icons8.com/?size=30&id=118638&format=png&color=012852"
-            },
-            # X
-            {
-                "url": "https://www.tiktok.com/@taeb4assembly",
-                "image": "https://img.icons8.com/?size=30&id=phOKFKYpe00C&format=png&color=012852"
-            },
-        ]
-        response = (get_db().table("mailing_list").select("*").execute())
-        print(list(map(lambda row: row["email"], response.data)))
-        return render_template('email/mailing_list.html', name="John Smith", content=content, social_links=social_links)
-    
-    @app.route('/login', methods=["GET"])
-    def login():
-        return render_template('authentication/login.html')
-    
-    @app.route('/login', methods=["POST"])
-    def login_post():
-        # get data
-        email = request.form.get("email")
-        password = request.form.get("password")
-        
-        supabase = get_db()
+    from . import auth
+    app.register_blueprint(auth.bp)
 
-        try:
-            supabase.auth.sign_in_with_password(
-                {
-                    "email": email, 
-                    "password": password,
-                }
-            )
-
-            return redirect("/mailing_list")
-        except AuthApiError:
-            return {
-                "success": False
-            }
-
-    @app.route('/mailing_list', methods=["GET"])
-    def send_email():
-        return render_template("forms/send_email.html")
-
-    @app.route('/mailing_list/preview', methods=["POST"])
-    def check_email():
-        content = request.form.get("content")
-        return render_template("email/mailing_list.html", name="John Smith", content=content)
-    
-    @app.route('/logout', methods=["POST"])
-    def logout():
-        supabase = get_db()
-        supabase.auth.sign_out()
-        return redirect("/login")
+    from . import mailing_list
+    app.register_blueprint(mailing_list.bp)
 
     return app
