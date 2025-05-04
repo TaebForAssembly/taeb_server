@@ -7,10 +7,10 @@
 {% block content %}
   <form method="post">
     {{ form.csrf_token }}
-    {{ form.email.label }} {{ form.email(size=20) }}
-    {{ form.password.label }} {{ form.password(size=20) }}
+    {{ form.subject.label }} {{ form.subject(size=20) }}
+    {{ form.content.label }} {{ form.content(size=20) }}
     <input type="submit" value="Send to List">
-    <input type="submit" formaction="mailing_list/preview" formtarget="_blank" formmethod="get">
+    <input type="submit" formaction="preview" formtarget="_blank" formmethod="get" value="Preview Email">
   </form>
 
   <form method="post" action="/logout">

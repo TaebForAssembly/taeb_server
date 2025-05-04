@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    {% if form.errors %}
-        <ul class="errors">
-        {% for error in form.errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-        </ul>
+    {% for field, errors in form.errors.items() %}
+    <div class="alert alert-error">
+        {{ form[field].label }}: {{ ', '.join(errors) }}
+    </div>
+    {% endfor %}
+    {% if error %}
+    <div class="alert alert-error">
+        {{error}}
+    </div>
     {% endif %}
 
     <form method="post">
