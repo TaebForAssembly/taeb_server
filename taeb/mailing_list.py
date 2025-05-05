@@ -4,6 +4,8 @@ from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired, Length
 from .db import signed_in, get_db
 import resend
+import markdown
+from markupsafe import Markup
 
 social_links = [
     # facebook
@@ -40,7 +42,7 @@ class MailingListForm(FlaskForm):
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
 def render_email(content, name="Mailing List Member"):
-    return render_template("email/mailing_list.html", name=name, content=content, social_links=social_links)
+    return render_template("email/mailing_list.html", name=name, content=Markup(markdown.markdown(content)), social_links=social_links)
 
 @bp.route('/', methods=["GET", "POST"])
 def mailing_list():
