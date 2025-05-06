@@ -72,6 +72,13 @@ def mailing_list():
                 "html": render_template("email/mailing_list.html", name="John Smith", content=form.content.data)
             } for email in email_list]
 
+            params: resend.Broadcasts.CreateParams = {
+                "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
+                "from": "Freshta Taeb <onboarding@taebforassembly.com>",
+                "subject": form.subject.data,
+                "html": render_template("email/mailing_list.html", content=form.content.data),
+            }
+
             email = resend.Emails.send(params)
             return jsonify(email)
         '''
@@ -81,3 +88,7 @@ def mailing_list():
 def check_email():
     content = request.args.get("content")
     return render_email(content)
+
+@bp.route('/users', methods=["POST"])
+def add_user():
+    pass

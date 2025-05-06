@@ -10,7 +10,6 @@
         <td style="padding: 1rem;">
             <table style="max-width: 600px; background-color: white; padding: 1rem; border-radius: 0.5rem; margin: auto;" width="100%">
                 <tr><td>
-                    <p>Dear {{name}},</p>
                     {{content.strip()}}
                 </td></tr>
             </table>
@@ -29,6 +28,7 @@
                 {%endfor%}
                 </tr>
             </table>
+            {RESEND_UNSUBSCRIBE_LINK}
         </td>
     </tr>
 </table>

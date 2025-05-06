@@ -27,4 +27,7 @@ def create_app(test_config=None):
     from . import mailing_list
     app.register_blueprint(mailing_list.bp)
 
+    from . import embed
+    app.register_blueprint(embed.bp)
+
     return app
