@@ -30,4 +30,8 @@ def create_app(test_config=None):
     from . import embed
     app.register_blueprint(embed.bp)
 
+    @app.route('/', methods=["GET"])
+    def hello_world():
+        return "Hello World"
+
     return app
