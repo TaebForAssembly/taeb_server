@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log-In{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% for field, errors in form.errors.items() %}
+    <div class="alert alert-error">
+        {{ form[field].label }}: {{ ', '.join(errors) }}
+    </div>
+    {% endfor %}
+    {% if error %}
+    <div class="alert alert-error">
+        {{error}}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {{ form.csrf_token }}
+        {{ form.email.label }} {{ form.email(size=20) }}
+        {{ form.password.label }} {{ form.password(size=20) }}
+        <input type="submit" value="Log-in">
+    </form>
+{% endblock %}
