@@ -32,6 +32,6 @@ def create_app(test_config=None):
 
     @app.route('/', methods=["GET"])
     def hello_world():
-        return "Hello World"
+        return "Hello World!"
 
     return app
