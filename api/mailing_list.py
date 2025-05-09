@@ -7,6 +7,9 @@ import resend
 import markdown
 from markupsafe import Markup
 from bs4 import BeautifulSoup
+import os
+
+resend.api_key = os.environ.get("RESEND_KEY")
 
 social_links = [
     # facebook
