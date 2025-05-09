@@ -1,5 +1,5 @@
 {
     "rewrites": [
-      { "source": "/(.*)", "destination": "/taeb/index" }
+      { "source": "/(.*)", "destination": "/taeb/__init__" }
     ]
 }

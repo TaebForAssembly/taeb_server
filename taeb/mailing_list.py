@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired, Length
-from .db import signed_in, get_db
+from db import signed_in, get_db
 import resend
 import markdown
 from markupsafe import Markup

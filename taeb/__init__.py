@@ -1,11 +1,14 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask
+import auth, mailing_list, embed
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev'
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
     if test_config is None:
@@ -21,17 +24,21 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from . import auth
     app.register_blueprint(auth.bp)
-
-    from . import mailing_list
     app.register_blueprint(mailing_list.bp)
-
-    from . import embed
     app.register_blueprint(embed.bp)
 
-    @app.route('/', methods=["GET"])
-    def hello_world():
-        return "Hello World!"
+    # a simple page that says hello
+    @app.route('/')
+    def root():
+        return 'Hello, World! Server working'
 
     return app
+
+if __name__ == '__main__':
+    print("main ran")
+    app = create_app()
+    load_dotenv()
+    app.run(debug=True)
+else:
+    app = create_app()

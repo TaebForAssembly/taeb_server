@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from .db import get_db
+from db import get_db
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Email
