@@ -35,10 +35,4 @@ def create_app(test_config=None):
 
     return app
 
-if __name__ == '__main__':
-    print("main ran")
-    app = create_app()
-    load_dotenv()
-    app.run(debug=True)
-else:
-    app = create_app()
+app = create_app()
