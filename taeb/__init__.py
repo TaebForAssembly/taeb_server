@@ -1,7 +1,6 @@
 import os
-from dotenv import load_dotenv
 from flask import Flask
-import auth, mailing_list, embed
+from . import auth, mailing_list, embed
 
 def create_app(test_config=None):
     # create and configure the app
@@ -33,3 +32,5 @@ def create_app(test_config=None):
         return 'Hello, World! Server working'
 
     return app
+
+app = create_app()
