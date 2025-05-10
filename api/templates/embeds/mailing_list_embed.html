@@ -1,13 +1,16 @@
-<form id="mailing_list_form_embed">
+<form id="taeb_server_mailing_list_form_embed">
     <label>Join our mailing list!</label>
     <input placeholder="Enter Email Here...">
     <button>Submit</button>
 
     <script>
-        let form = document.getElementById("mailing_list_form_embed");
+        let form = document.getElementById("taeb_server_mailing_list_form_embed");
 
-        async function postEmail() {
-            await fetch();
+        async function postEmail(email) {
+            await fetch("https://taeb-server.vercel.app/mailing_list/users", {
+                method: "POST",
+                body : JSON.stringify({ email: email })
+            });
         }
     </script>
 </form>

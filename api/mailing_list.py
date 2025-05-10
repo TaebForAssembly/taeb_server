@@ -8,6 +8,7 @@ import markdown
 from markupsafe import Markup
 from bs4 import BeautifulSoup
 import os
+import re
 
 resend.api_key = os.environ.get("RESEND_KEY")
 
@@ -59,32 +60,14 @@ def mailing_list():
         return redirect(url_for("login"))
     form = MailingListForm()
     if form.validate_on_submit():
-        supabase = get_db()
-        response = (
-            supabase.table("mailing_list")
-            .select("email")
-            .execute()
-        )
-        email_list = list(map(lambda point: point["email"], response.data))
-        '''
-            TODO: Setup Resend
-            params = [{
-                "from": "Freshta Taeb <onboarding@taebforassembly.com>",
-                "to": email,
-                "subject" : form.subject.data,
-                "html": render_template("email/mailing_list.html", name="John Smith", content=form.content.data)
-            } for email in email_list]
-
-            params: resend.Broadcasts.CreateParams = {
-                "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
-                "from": "Freshta Taeb <onboarding@taebforassembly.com>",
-                "subject": form.subject.data,
-                "html": render_template("email/mailing_list.html", content=form.content.data),
-            }
-
-            email = resend.Emails.send(params)
-            return jsonify(email)
-        '''
+        params: resend.Broadcasts.CreateParams = {
+            "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
+            "from": "Freshta Taeb <onboarding@taebforassembly.com>",
+            "subject": form.subject.data,
+            "html": render_template("email/mailing_list.html", content=form.content.data),
+        }
+        email = resend.Emails.send(params)
+        return jsonify(email)
     return render_template("forms/send_email.html", form=form)
 
 @bp.route('/preview', methods=["GET"])
@@ -94,4 +77,17 @@ def check_email():
 
 @bp.route('/users', methods=["POST"])
 def add_user():
-    pass
+    # error testing
+    email = request.form.get("email")
+    email_regex = r".+@.+"
+    if email is None or re.search(email_regex, email) is None:
+        return { "success" : False, "message": "Email must be in \"_@_\" format" }
+    
+    # send to mailing list
+    params: resend.Contacts.CreateParams = {
+        "email": email,
+        "unsubscribed": False,
+        "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
+    }
+    response = resend.Contacts.create(params)
+    return response
