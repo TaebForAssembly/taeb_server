@@ -7,10 +7,12 @@
         let form = document.getElementById("taeb_server_mailing_list_form_embed");
 
         async function postEmail(email) {
-            await fetch("https://taeb-server.vercel.app/mailing_list/users", {
+            const response = await fetch("https://taeb-server.vercel.app/mailing_list/users", {
                 method: "POST",
                 body : JSON.stringify({ email: email })
             });
+            return response;
         }
+
     </script>
 </form>

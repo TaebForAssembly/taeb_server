@@ -56,9 +56,13 @@ def render_email(content, name="Mailing List Member"):
 
 @bp.route('/', methods=["GET", "POST"])
 def mailing_list():
+    # ensure user has access
     if not signed_in():
-        return redirect(url_for("login"))
+        return redirect(url_for("auth.login"))
+    
     form = MailingListForm()
+    
+    # if form was submitted correctly
     if form.validate_on_submit():
         params: resend.Broadcasts.CreateParams = {
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
@@ -68,6 +72,8 @@ def mailing_list():
         }
         email = resend.Emails.send(params)
         return jsonify(email)
+
+    # else return the corm
     return render_template("forms/send_email.html", form=form)
 
 @bp.route('/preview', methods=["GET"])
@@ -81,7 +87,7 @@ def add_user():
     email = request.form.get("email")
     email_regex = r".+@.+"
     if email is None or re.search(email_regex, email) is None:
-        return { "success" : False, "message": "Email must be in \"_@_\" format" }
+        return { "success" : False, "message": "Email must be supplied and in \"_@_\" format" }, 400
     
     # send to mailing list
     params: resend.Contacts.CreateParams = {
