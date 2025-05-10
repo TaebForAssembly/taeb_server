@@ -61,7 +61,7 @@ def mailing_list():
         return redirect(url_for("auth.login"))
     
     form = MailingListForm()
-    
+
     # if form was submitted correctly
     if form.validate_on_submit():
         params: resend.Broadcasts.CreateParams = {
@@ -86,8 +86,10 @@ def add_user():
     # error testing
     email = request.form.get("email")
     email_regex = r".+@.+"
-    if email is None or re.search(email_regex, email) is None:
-        return { "success" : False, "message": "Email must be supplied and in \"_@_\" format" }, 400
+    if email is None:
+        return { "success" : False, "message": "Email must be supplied" }, 400
+    elif re.search(email_regex, email) is None:
+        return { "success" : False, "message": "Email must be in \"_@_\" format" }, 400
     
     # send to mailing list
     params: resend.Contacts.CreateParams = {
@@ -96,4 +98,7 @@ def add_user():
         "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
     }
     response = resend.Contacts.create(params)
-    return response
+    return {
+        "response" : response,
+        "success" : True
+    }

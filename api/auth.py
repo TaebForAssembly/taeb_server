@@ -25,6 +25,7 @@ def login():
                     "password": password,
                 }
             )
+            return redirect("/mailing_list")
         except AuthApiError:
             return render_template('authentication/login.html', form=form, error="Login Error")
     return render_template('authentication/login.html', form=form)
