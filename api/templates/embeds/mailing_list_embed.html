@@ -3,6 +3,7 @@
 {% block head %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://parsleyjs.org/dist/parsley.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='embed.css') }}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,10 +11,10 @@
 {% endblock %}
 
 {% block content %}
+<p hidden class="success_message">Thanks for joining the team!</p>
 <form id="taeb_server_mailing_list_form_embed" class="raleway">
     <label>Join our mailing list!</label>
     <input placeholder="Enter Email Here..." type="email" class="form-control" name="email" data-parsley-trigger="change" required="">
-    <p hidden class="success_message">Success!</p>
     <button>Submit</button>
 </form>
 <script type="text/javascript">
@@ -24,7 +25,6 @@
             method: "POST",
             body : new FormData(document.getElementById("taeb_server_mailing_list_form_embed"))
         }).then((response) => response.json());
-        console.log(response);
         return response;
     }
 
@@ -34,9 +34,8 @@
 
             postEmail($("taeb_server_mailing_list_form_embed.email").val()).then(({success, message}) => {
                 if (success) {
-                    console.log("success");
-                    $("#taeb_server_mailing_list_form_embed > input[type=email]").hide();
-                    $("#taeb_server_mailing_list_form_embed > .success_message").removeAttr("hidden");
+                    $("#taeb_server_mailing_list_form_embed > *").hide(400);
+                    $(".success_message").removeAttr("hidden");
                 }
                 else {
                     emailField.addError('serverError', {
