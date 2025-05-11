@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired, Length
@@ -46,13 +46,13 @@ class MailingListForm(FlaskForm):
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
-def render_email(content, name="Mailing List Member"):
+def render_email(content):
     html_content = markdown.markdown(content)
     soup = BeautifulSoup(html_content, 'html.parser')
     for img in soup.find_all('img'):
         img['width'] = '100%'
     html_content = str(soup)
-    return render_template("email/mailing_list_preview.html", name=name, content=Markup(markdown.markdown(html_content)), social_links=social_links)
+    return render_template("email/mailing_list_preview.html", content=Markup(markdown.markdown(html_content)), social_links=social_links)
 
 @bp.route('/', methods=["GET", "POST"])
 def mailing_list():
@@ -68,10 +68,12 @@ def mailing_list():
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
             "from": "Freshta Taeb <onboarding@taebforassembly.com>",
             "subject": form.subject.data,
-            "html": render_template("email/mailing_list.html", content=form.content.data),
+            "name": form.subject.data,
+            "html": render_email(form.content.data),
         }
-        email = resend.Emails.send(params)
-        return jsonify(email)
+        email = resend.Broadcasts.create(params)
+        flash(f"Broadcast with id \"{email["id"]}\" successfully sent")
+        return redirect(url_for("mailing_list"))
 
     # else return the corm
     return render_template("forms/send_email.html", form=form)
@@ -102,3 +104,7 @@ def add_user():
         "response" : response,
         "success" : True
     }
+
+@bp.route('/unsubscribe', methods=["POST"])
+def remove_user():
+    pass
