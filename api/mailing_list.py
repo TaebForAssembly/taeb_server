@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField
+from wtforms import StringField, TextAreaField, DateTimeLocalField
 from wtforms.validators import DataRequired, Length
 from .db import signed_in, get_db
 import resend
@@ -43,6 +43,7 @@ social_links = [
 class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
     content = TextAreaField('Content', validators=[Length(message='Content must be at least 5 characters', min=5)])
+    datetime = DateTimeLocalField('Schedule Date')
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
@@ -72,6 +73,10 @@ def mailing_list():
             "html": render_email(form.content.data),
         }
         email = resend.Broadcasts.create(params)
+        params: resend.Broadcasts.SendParams = {
+            "broadcast_id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+            "scheduled_at": "in 1 min"
+        }
         flash(f"Broadcast with id \"{email["id"]}\" successfully sent")
         return redirect(url_for("mailing_list"))
 

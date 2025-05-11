@@ -9,6 +9,7 @@
     {{ form.csrf_token }}
     {{ form.subject.label }} {{ form.subject(size=20) }}
     {{ form.content.label }} {{ form.content(size=20) }}
+    {{ form.datetime.label }} {{ form.datetime(size=20) }}
     <input type="submit" value="Send to List">
     <input type="submit" formaction="preview" formtarget="_blank" formmethod="get" value="Preview Email">
   </form>
