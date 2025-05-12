@@ -65,6 +65,10 @@ def mailing_list():
 
     # if form was submitted correctly
     if form.validate_on_submit():
+        flash(f"hello world")
+        return redirect(url_for("mailing_list"))
+
+
         params: resend.Broadcasts.CreateParams = {
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
             "from": "Freshta Taeb <onboarding@taebforassembly.com>",
@@ -73,8 +77,11 @@ def mailing_list():
             "html": render_email(form.content.data),
         }
         email = resend.Broadcasts.create(params)
+        if email is None or 'id' not in email:
+            flash("Could not create email")
+            return render_template("forms/send_email.html", form=form)
         params: resend.Broadcasts.SendParams = {
-            "broadcast_id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+            "broadcast_id": email.id,
             "scheduled_at": "in 1 min"
         }
         flash(f"Broadcast with id \"{email["id"]}\" successfully sent")

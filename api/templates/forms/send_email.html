@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'form.html' %}
 
 {% block header %}
   <h1>{% block title %}Send to mailing list{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block form_content %}
   <form method="post">
     {{ form.csrf_token }}
     {{ form.subject.label }} {{ form.subject(size=20) }}
@@ -15,6 +15,6 @@
   </form>
 
   <form method="post" action="/logout">
-    <button type="submit">Log-out</button>
+    <input type="submit" value="Log-out">
   </form>
 {% endblock %}
