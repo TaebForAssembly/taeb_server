@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block form_content %}
-<form method="post">
+<form method="post" autocomplete="off">
     {{ form.csrf_token }}
     {{ form.email.label }} {{ form.email(size=20) }}
     {{ form.password.label }} {{ form.password(size=20) }}
