@@ -28,13 +28,14 @@ body {
 input[type=email] {
     width: 100%;
     padding: 0.75rem;
-    border-radius: 1rem 0rem 0rem 1rem;
+    border-radius: 2rem;
     background-color: rgba(0,0,0,0);
     border: 1px solid white;
     outline: none;
     transition: background-color 0.1s;
     color: white;
     font-size: large;
+    box-sizing: border-box;
 }
 
 input[type=email]:focus {
@@ -63,8 +64,8 @@ button {
     background-color: #FDB907;
     color: black;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0 1rem 1rem 0;
+    padding: 0.75rem 1.25rem;
+    border-radius: 2rem;
     transition: background-color 0.1s;
 }
 
@@ -80,19 +81,13 @@ body {
     margin: 0;
 }
 
-.email_form_input {
-    font-size: large;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
 
-.email_form_input button {
+button {
     font-size: large;
 }
 
 label, p {
-    font-size: large;
+    font-size: x-large;
 }
 
 form {
