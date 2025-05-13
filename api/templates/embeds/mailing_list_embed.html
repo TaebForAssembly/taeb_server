@@ -21,14 +21,17 @@
 <p hidden class="success_message">Thanks for joining the team!</p>
 <form id="taeb_server_mailing_list_form_embed" class="raleway">
     <label>Join our mailing list!</label>
-    <input placeholder="Enter Email Here..." type="email" class="form-control" name="email" data-parsley-trigger="change" required="">
-    <button>Submit</button>
+    <div class="email_input_container">
+        <input placeholder="Enter Email Here..." type="email" class="form-control" name="email" data-parsley-trigger="change" required="" data-parsley-errors-container="#email_errors_container">
+        <button>Submit</button>
+    </div>
+    <div id="email_errors_container"></div>
 </form>
 <script type="text/javascript">
     let form = $('#taeb_server_mailing_list_form_embed');
 
     async function postEmail(email) {
-        const response = await fetch("http://127.0.0.1:5000/mailing_list/users", {
+        const response = await fetch(`https://taeb-server.vercel.app/mailing_list/users`, {
             method: "POST",
             body : new FormData(document.getElementById("taeb_server_mailing_list_form_embed"))
         }).then((response) => response.json());
