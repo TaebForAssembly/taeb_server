@@ -5,17 +5,15 @@ import os
 
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
+supabase = create_client(url, key)
 
 def get_db():
-    if 'db' not in g:
-        g.db = create_client(url, key)
-    
-    return g.db
+    return supabase
 
 def signed_in():
     supabase = get_db()
     try:
-        supabase.auth.get_user()
-        return True
+        user = supabase.auth.get_user()
+        return user is not None
     except AuthApiError:
         return False

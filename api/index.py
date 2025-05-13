@@ -1,6 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask, redirect
 from . import auth, mailing_list, embed
+from .db import signed_in
 
 def create_app(test_config=None):
     # create and configure the app
@@ -29,7 +30,10 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/')
     def root():
-        return 'Hello, World! Server working'
+        if signed_in():
+            return redirect("/mailing_list")
+        else:
+            return redirect("/login")
 
     return app
 
