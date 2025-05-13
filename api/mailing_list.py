@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, DateTimeLocalField
-from wtforms.validators import DataRequired, Length
+import resend.exceptions
+from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationError
+from wtforms.validators import DataRequired, Length, Optional
 from .db import signed_in, get_db
 import resend
 import markdown
@@ -9,6 +10,8 @@ from markupsafe import Markup
 from bs4 import BeautifulSoup
 import os
 import re
+from datetime import datetime
+import pytz
 
 resend.api_key = os.environ.get("RESEND_KEY")
 
@@ -40,10 +43,15 @@ social_links = [
     },
 ]
 
+
+def later_than_now(_form, field):
+    if datetime.now() > pytz.timezone("America/New_York").localize(field.data):
+        raise ValidationError("Date must be later than now")
+
 class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
     content = TextAreaField('Content', validators=[Length(message='Content must be at least 5 characters', min=5)])
-    datetime = DateTimeLocalField('Schedule Date')
+    datetime = DateTimeLocalField('Schedule Date', validators=[Optional(), later_than_now])
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
@@ -65,27 +73,35 @@ def mailing_list():
 
     # if form was submitted correctly
     if form.validate_on_submit():
-        flash(f"hello world")
-        return redirect(url_for("mailing_list"))
-
-
         params: resend.Broadcasts.CreateParams = {
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
-            "from": "Freshta Taeb <onboarding@taebforassembly.com>",
+            "from": "Freshta Taeb <news@taebforassembly.com>",
             "subject": form.subject.data,
             "name": form.subject.data,
             "html": render_email(form.content.data),
         }
-        email = resend.Broadcasts.create(params)
-        if email is None or 'id' not in email:
-            flash("Could not create email")
+
+        try:
+            email = resend.Broadcasts.create(params)
+        except resend.exceptions.ResendError as err:
+            flash(f"Error sending broadcast: {err}")
             return render_template("forms/send_email.html", form=form)
+
         params: resend.Broadcasts.SendParams = {
-            "broadcast_id": email.id,
-            "scheduled_at": "in 1 min"
+            "broadcast_id": email["id"]
         }
+        if form.datetime.data is not None:
+            print(form.datetime.data.isoformat())
+            params["scheduled_at"] = pytz.timezone("America/New_York").localize(form.datetime.data).isoformat()
+        
+        try:
+            resend.Broadcasts.send(params)
+        except resend.exceptions.ResendError as err:
+            flash(f"Error sending broadcast: {err}")
+            return render_template("forms/send_email.html", form=form)
+        
         flash(f"Broadcast with id \"{email["id"]}\" successfully sent")
-        return redirect(url_for("mailing_list"))
+        return redirect(url_for("mailing_list.mailing_list"))
 
     # else return the corm
     return render_template("forms/send_email.html", form=form)
@@ -116,7 +132,3 @@ def add_user():
         "response" : response,
         "success" : True
     }
-
-@bp.route('/unsubscribe', methods=["POST"])
-def remove_user():
-    pass
