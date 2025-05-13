@@ -27,13 +27,14 @@ body {
 
 input[type=email] {
     width: 100%;
-    padding: 0.5rem;
-    border-radius: 1rem;
+    padding: 0.75rem;
+    border-radius: 1rem 0rem 0rem 1rem;
     background-color: rgba(0,0,0,0);
     border: 1px solid white;
     outline: none;
     transition: background-color 0.1s;
     color: white;
+    font-size: large;
 }
 
 input[type=email]:focus {
@@ -63,7 +64,7 @@ button {
     color: black;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 1rem;
+    border-radius: 0 1rem 1rem 0;
     transition: background-color 0.1s;
 }
 
@@ -77,4 +78,23 @@ body {
 
 .parsley-errors-list {
     margin: 0;
+}
+
+.email_form_input {
+    font-size: large;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.email_form_input button {
+    font-size: large;
+}
+
+label, p {
+    font-size: large;
+}
+
+form {
+    width: 100%;
 }
