@@ -28,7 +28,7 @@
     let form = $('#taeb_server_mailing_list_form_embed');
 
     async function postEmail(email) {
-        const response = await fetch("http://127.0.0.1:5000/mailing_list/users", {
+        const response = await fetch(`https://taeb-server.vercel.app/mailing_list/users`, {
             method: "POST",
             body : new FormData(document.getElementById("taeb_server_mailing_list_form_embed"))
         }).then((response) => response.json());
