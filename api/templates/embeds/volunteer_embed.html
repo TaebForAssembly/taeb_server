@@ -66,28 +66,35 @@
         <textarea name="availability" class="form-control"></textarea>
     </label>
 
-    <section>
-        <label>Which tasks would you like to participate in?</label>
+    <label>Which tasks would you like to participate in?</label>
+    <section id="task-selector">
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="canvassing"/>
+            <input
+                type="checkbox" name="tasks[]" value="canvassing" class="task-selector"
+                data-parsley-required="true"
+                data-parsley-mincheck="1"
+                data-parsley-class-handler="#task-selector"
+                data-parsley-errors-container="#task-selector-error-container"
+            />
             Canvassing
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="phone-banking"/>
+            <input type="checkbox" name="tasks[]" value="phone-banking" class="task-selector"/>
             Phone Banking
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="event-coordination"/>
+            <input type="checkbox" name="tasks[]" value="event-coordination" class="task-selector"/>
             Event Coordination
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="lawn-sign-delivery"/>
+            <input type="checkbox" name="tasks[]" value="lawn-sign-delivery"class="task-selector"/>
             Lawn Sign Delivery
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="meet-and-greet-host"/>
+            <input type="checkbox" name="tasks[]" value="meet-and-greet-host" class="task-selector"/>
             Meet and Greet Host
         </label>
+        <div id="task-selector-error-container"></div>
     </section>
 
     <button type="submit">Submit</button>

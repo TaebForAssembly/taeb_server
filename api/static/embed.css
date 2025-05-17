@@ -141,3 +141,8 @@ textarea.form-control {
 textarea.form-control:focus {
     resize: vertical;
 }
+
+#task-selector {
+    padding: 1rem;
+    border-radius: 1rem;
+}
