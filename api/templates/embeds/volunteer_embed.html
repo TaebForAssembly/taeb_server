@@ -2,44 +2,122 @@
 
 {% block embed_content %}
 <p hidden class="success_message">Thanks for subscribing to our newsletter!</p>
-<form id="taeb_server_mailing_list_form_embed" class="raleway">
-    <label>Join our mailing list!</label>
-    <div class="email_input_container">
-        <input placeholder="Enter Email Here..." type="email" class="form-control" name="email" data-parsley-trigger="change" required="" data-parsley-errors-container="#email_errors_container">
-        <button>Submit</button>
+<form id="taeb_server_volunteer_form_embed" class="raleway">
+    <h1>Name <i>(required)</i></h1>
+    <div class="form_flex">
+        <label>
+            First Name
+            <input type="text" name="fname" class="form-control"/>
+        </label>
+        <label>
+            Last Name 
+            <input type="text" name="lname" class="form-control"/>
+        </label>
     </div>
-    <div id="email_errors_container"></div>
+    
+    <h1>Address</h1>
+    <label>
+        Address Line 1 <i>(required)</i>
+        <input type="text" name="address1" class="form-control"/>
+    </label>
+    <label>
+        Address Line 2 
+        <input type="text" name="address2" class="form-control"/>
+    </label>
+    
+    <div class="form_flex">
+        <label>
+            City <i>(required)</i>
+            <input type="text" name="fname" class="form-control" />
+        </label>
+        <label>
+            State <i>(required)</i>
+            <select class="form-control">
+                {% for abbreviation, state in states.items() %}
+                    <option value={{abbreviation}}>{{state}}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            ZIP Code <i>(required)</i>
+            <input type="text" name="lname" class="form-control"/>
+        </label>
+    </div>
+
+    <h1>Contact Information</h1>
+    <label>
+        Email
+        <input type="email" name="email" class="form-control"/>
+    </label>
+
+    <label>
+        Phone Number <i>(required)</i>
+        <input type="tel" name="phone" class="form-control"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"/>
+    </label>
+
+    <h1>About You</h1>
+    <label>
+        Tell us a bit about yourself
+        <textarea name="personal" class="form-control"></textarea>
+    </label>
+
+    <label>
+        Describe your availability
+        <textarea name="availability" class="form-control"></textarea>
+    </label>
+
+    <section>
+        <label>Which tasks would you like to participate in?</label>
+        <label style="font-size: larger;">
+            <input type="checkbox" name="tasks[]" value="canvassing"/>
+            Canvassing
+        </label>
+        <label style="font-size: larger;">
+            <input type="checkbox" name="tasks[]" value="phone-banking"/>
+            Phone Banking
+        </label>
+        <label style="font-size: larger;">
+            <input type="checkbox" name="tasks[]" value="event-coordination"/>
+            Event Coordination
+        </label>
+        <label style="font-size: larger;">
+            <input type="checkbox" name="tasks[]" value="lawn-sign-delivery"/>
+            Lawn Sign Delivery
+        </label>
+        <label style="font-size: larger;">
+            <input type="checkbox" name="tasks[]" value="meet-and-greet-host"/>
+            Meet and Greet Host
+        </label>
+    </section>
+
+    <button type="submit">Submit</button>
 </form>
 <script type="text/javascript">
-    let form = $('#taeb_server_mailing_list_form_embed');
+    let form = $('#taeb_server_volunteer_form_embed');
 
-    async function postEmail(email) {
-        const response = await fetch(`https://taeb-server.vercel.app/mailing_list/users`, {
-            method: "POST",
-            body : new FormData(document.getElementById("taeb_server_mailing_list_form_embed"))
-        }).then((response) => response.json());
-        return response;
+    function parseData(formData) {
+        const obj = {};
+
+        for (const [key, value] of formData.entries()) {
+            const arrayMatch = key.match(/^(.+)\[\]$/);
+            if (arrayMatch) {
+                const name = arrayMatch[1];
+                if (!obj[name]) obj[name] = [];
+                obj[name].push(value);
+            } else {
+                obj[key] = value;
+            }
+        }
+
+        return obj;
     }
 
     $(function () {
         form.parsley().on('form:submit', function() {
-            let emailField = form.find("input").parsley();
-
-            postEmail($("taeb_server_mailing_list_form_embed.email").val()).then(({success, message}) => {
-                if (success) {
-                    $("#taeb_server_mailing_list_form_embed > *").hide(400);
-                    $(".success_message").removeAttr("hidden");
-                }
-                else {
-                    emailField.addError('serverError', {
-                        message: message,
-                        updateClass: true
-                    });
-                }
-            })
+            const data = new FormData(document.getElementById("taeb_server_volunteer_form_embed"));
+            console.log(parseData(data));
             return false;
         });
     });
-
 </script>
 {% endblock %}

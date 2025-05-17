@@ -1,4 +1,4 @@
-input, label {
+input:not([type=checkbox]), label, textarea {
     display: block;
 }
 
@@ -18,17 +18,17 @@ body {
     border: 1px solid #EED3D7 !important;
 }
 
-.raleway, input, button, .success_message {
+.raleway, input, button, .success_message, textarea {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
 }
 
-input[type=email] {
+.form-control {
     width: 100%;
-    padding: 0.75rem;
-    border-radius: 2rem 0 0 2rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
     background-color: rgba(0,0,0,0);
     border: 1px solid white;
     outline: none;
@@ -38,11 +38,15 @@ input[type=email] {
     box-sizing: border-box;
 }
 
-input[type=email]:focus {
+.form-control.partial {
+    border-radius: 2rem 0 0 2rem;
+}
+
+.form-control:focus {
     border: 1px solid #555;
 }
 
-input[type=email]:focus, input[type=email]:hover {
+.form-control:focus, .form-control:hover {
     background-color: rgba(0,0,0,0.25);
 }
 
@@ -65,8 +69,12 @@ button {
     color: black;
     border: none;
     padding: 0.75rem 1.25rem;
-    border-radius: 0 2rem 2rem 0;
+    border-radius: 2rem;
     transition: background-color 0.1s;
+}
+
+button.partial {
+    border-radius: 0 2rem 2rem 0;
 }
 
 button:hover {
@@ -90,6 +98,10 @@ label, p {
     font-size: x-large;
 }
 
+label {
+    width: 100%;
+}
+
 form {
     width: 100%;
 }
@@ -98,4 +110,34 @@ form {
     display: flex;
     flex-direction: row;
     width: 100%;
+}
+
+.form_flex {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 1rem;
+}
+
+.form_flex div {
+    flex-grow: 1;
+}
+
+i {
+    color: lightgray;
+    font-weight: normal;
+}
+
+h1 {
+    margin: 1rem 0rem 0.5rem 0rem; 
+}
+
+textarea.form-control {
+    resize: none;
+    height: 7rem;
+    min-height: 3rem;
+}
+
+textarea.form-control:focus {
+    resize: vertical;
 }
