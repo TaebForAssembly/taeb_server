@@ -7,18 +7,18 @@
     <div class="form_flex">
         <label>
             First Name
-            <input type="text" name="fname" class="form-control"/>
+            <input type="text" name="first_name" class="form-control" required/>
         </label>
         <label>
             Last Name 
-            <input type="text" name="lname" class="form-control"/>
+            <input type="text" name="last_name" class="form-control" required/>
         </label>
     </div>
     
     <h1>Address</h1>
     <label>
         Address Line 1 <i>(required)</i>
-        <input type="text" name="address1" class="form-control"/>
+        <input type="text" name="address1" class="form-control" required/>
     </label>
     <label>
         Address Line 2 
@@ -28,11 +28,11 @@
     <div class="form_flex">
         <label>
             City <i>(required)</i>
-            <input type="text" name="fname" class="form-control" />
+            <input type="text" name="city" class="form-control" required/>
         </label>
         <label>
             State <i>(required)</i>
-            <select class="form-control">
+            <select class="form-control" name="state" required>
                 {% for abbreviation, state in states.items() %}
                     <option value={{abbreviation}}>{{state}}</option>
                 {% endfor %}
@@ -40,38 +40,38 @@
         </label>
         <label>
             ZIP Code <i>(required)</i>
-            <input type="text" name="lname" class="form-control"/>
+            <input type="text" name="zip" class="form-control" required/>
         </label>
     </div>
 
     <h1>Contact Information</h1>
     <label>
-        Email
-        <input type="email" name="email" class="form-control"/>
+        Email <i>(required)</i>
+        <input type="email" name="email" class="form-control" required/>
     </label>
 
     <label>
         Phone Number <i>(required)</i>
-        <input type="tel" name="phone" class="form-control"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"/>
+        <input type="tel" name="phone" class="form-control"  pattern="(?:[0-9]{3}-[0-9]{3}-[0-9]{4}|[0-9]{10}|\([0-9]{3}\) ?[0-9]{3}-[0-9]{4})" required/>
     </label>
 
     <h1>About You</h1>
     <label>
         Tell us a bit about yourself
-        <textarea name="personal" class="form-control"></textarea>
+        <textarea name="personal" class="form-control" required></textarea>
     </label>
 
     <label>
         Describe your availability
-        <textarea name="availability" class="form-control"></textarea>
+        <textarea name="availability" class="form-control" required></textarea>
     </label>
 
-    <label>Which tasks would you like to participate in?</label>
+    <label>Which tasks would you like to participate in? <i>(click at least one)</i></label>
     <section id="task-selector">
         <label style="font-size: larger;">
             <input
                 type="checkbox" name="tasks[]" value="canvassing" class="task-selector"
-                data-parsley-required="true"
+                required
                 data-parsley-mincheck="1"
                 data-parsley-class-handler="#task-selector"
                 data-parsley-errors-container="#task-selector-error-container"
@@ -121,8 +121,10 @@
 
     $(function () {
         form.parsley().on('form:submit', function() {
-            const data = new FormData(document.getElementById("taeb_server_volunteer_form_embed"));
-            console.log(parseData(data));
+            let data = new FormData(document.getElementById("taeb_server_volunteer_form_embed"));
+            data = parseData(data);
+            data.phone = data.phone.replaceAll(/\D/.global, ""); // convert all to numeric string
+            console.log(data);
             return false;
         });
     });
