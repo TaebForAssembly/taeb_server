@@ -70,7 +70,7 @@
     <section id="task-selector">
         <label style="font-size: larger;">
             <input
-                type="checkbox" name="tasks[]" value="canvassing" class="task-selector"
+                type="checkbox" name="tasks" value="canvassing" class="task-selector"
                 required
                 data-parsley-mincheck="1"
                 data-parsley-class-handler="#task-selector"
@@ -79,19 +79,19 @@
             Canvassing
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="phone-banking" class="task-selector"/>
+            <input type="checkbox" name="tasks" value="phone_banking" class="task-selector"/>
             Phone Banking
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="event-coordination" class="task-selector"/>
+            <input type="checkbox" name="tasks" value="event_coordination" class="task-selector"/>
             Event Coordination
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="lawn-sign-delivery"class="task-selector"/>
+            <input type="checkbox" name="tasks" value="lawn_sign_delivery"class="task-selector"/>
             Lawn Sign Delivery
         </label>
         <label style="font-size: larger;">
-            <input type="checkbox" name="tasks[]" value="meet-and-greet-host" class="task-selector"/>
+            <input type="checkbox" name="tasks" value="meet_and_greet_host" class="task-selector"/>
             Meet and Greet Host
         </label>
         <div id="task-selector-error-container"></div>
@@ -119,12 +119,27 @@
         return obj;
     }
 
+    async function postVolunteer(data) {
+        let formData = Object.fromEntries(data);
+        formData = {address1 : formData["address1"]}
+        
+        const response = await fetch(`http://127.0.0.1:5000/volunteer`, {
+            method: "POST",
+            body : JSON.stringify(formData)
+        }).then((response) => response.json()).catch(error => {});
+        return response;
+    }
+
     $(function () {
         form.parsley().on('form:submit', function() {
             let data = new FormData(document.getElementById("taeb_server_volunteer_form_embed"));
-            data = parseData(data);
-            data.phone = data.phone.replaceAll(/\D/.global, ""); // convert all to numeric string
-            console.log(data);
+
+            print(JSON.stringify(data));
+            fetch(`http://127.0.0.1:5000/volunteer`, {
+                method: "POST",
+                body: JSON.stringify(data)
+            }).then(r => r.json()).then(r => console.log(r));
+
             return false;
         });
     });

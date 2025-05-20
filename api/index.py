@@ -1,6 +1,6 @@
 import os
 from flask import Flask, redirect
-from . import auth, mailing_list, embed
+from . import auth, mailing_list, embed, volunteer
 from .db import signed_in
 from flask_cors import CORS
 
@@ -28,6 +28,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
     app.register_blueprint(mailing_list.bp)
     app.register_blueprint(embed.bp)
+    app.register_blueprint(volunteer.bp)
 
     # a simple page that says hello
     @app.route('/')
