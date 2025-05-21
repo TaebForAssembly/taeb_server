@@ -45,7 +45,8 @@ social_links = [
 
 
 def later_than_now(_form, field):
-    if datetime.now() > pytz.timezone("America/New_York").localize(field.data):
+    our_timezone = pytz.timezone("America/New_York")
+    if datetime.now().astimezone(our_timezone) > our_timezone.localize(field.data):
         raise ValidationError("Date must be later than now")
 
 class MailingListForm(FlaskForm):
@@ -91,9 +92,8 @@ def mailing_list():
             "broadcast_id": email["id"]
         }
         if form.datetime.data is not None:
-            print(form.datetime.data.isoformat())
             params["scheduled_at"] = pytz.timezone("America/New_York").localize(form.datetime.data).isoformat()
-        
+
         try:
             resend.Broadcasts.send(params)
         except resend.exceptions.ResendError as err:
