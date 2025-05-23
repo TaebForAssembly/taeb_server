@@ -1,9 +1,9 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from webargs.flaskparser import abort, parser, use_args, use_kwargs
 from .data import state_dict, activities
 from marshmallow import Schema, fields, validate, pre_load, ValidationError
-
-import sys
+from .db import supabase
+from supabase import PostgrestAPIError
 
 bp = Blueprint('volunteer', __name__, url_prefix='/volunteer')
 
@@ -27,9 +27,9 @@ class VolunteerSchema(Schema):
     phone = fields.Str(required=True, validate=validate.Regexp(r"[0-9]{10}"))
 
     # about
-    personal = fields.Str(required=True, validate=validate.Length(max=2000))
+    personal = fields.Str(validate=validate.Length(max=2000))
     availability = fields.Str(required=True, validate=validate.Length(max=2000))
-    tasks = fields.List(fields.Str(validate=validate.OneOf(activities)), validate=[validate.Length(min=1), no_duplicates])
+    tasks = fields.List(fields.Str(validate=validate.OneOf(activities)), required=True, validate=[validate.Length(min=1), no_duplicates])
 
     @pre_load
     def trim_inputs(self, in_data, **kwargs):
@@ -47,13 +47,33 @@ class VolunteerSchema(Schema):
             else:
                 out[k] = v
         return out
-    
 
 @bp.route('/', methods=["POST"])
 @use_args(VolunteerSchema(), location='form')
 def add_volunteer(args):
-    return args
+    response = (
+        supabase.table("volunteers")
+        .insert(args)
+        .execute()
+    )
+    
+    return {
+        "success" : True,
+        "data" : response.data
+    }
 
-@parser.error_handler
-def handle_request_parsing_error(err, req, schema, *, error_status_code, error_headers):
-    raise Exception(err.messages)
+@bp.errorhandler(422)
+@bp.errorhandler(400)
+def handle_error(err):
+    headers = err.data.get("headers", None)
+    messages = err.data.get("messages", ["Invalid request."])
+    if headers:
+        return jsonify({"success": False, "errors": messages}), err.code, headers
+    else:
+        return jsonify({"success": False, "errors": messages}), err.code
+
+@bp.errorhandler(PostgrestAPIError)
+def handle_supabase_err(err):
+    err_dict = err.json()
+    err_dict["success"] = False
+    return jsonify(err_dict), 400
