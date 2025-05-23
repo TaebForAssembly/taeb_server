@@ -35,11 +35,15 @@ class VolunteerSchema(Schema):
     def trim_inputs(self, in_data, **kwargs):
         out = {}
         for k,v in in_data.items():
+            # if string, strip it
+            # if stripped is empty, don't add to out
             if isinstance(v, str):
                 if v.strip():
                     out[k] = v.strip()
+            # else if a list of strings, map strings to trimmed strings
             elif isinstance(v, list) and all(isinstance(v_item, str) for v_item in v):
                 out[k] = [v_item.strip() for v_item in v]
+            # Otherwise, add as is to outputS
             else:
                 out[k] = v
         return out
