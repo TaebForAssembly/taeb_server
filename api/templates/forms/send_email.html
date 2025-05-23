@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block form_content %}
-  <form method="post" autocomplete="off">
+  <form method="post" autocomplete="off" onsubmit="return confirmSubmit()">
     {{ form.csrf_token }}
     {{ form.subject.label }} {{ form.subject(size=20) }}
     {{ form.content.label }} {{ form.content(size=20) }}
@@ -17,4 +17,10 @@
   <form method="post" action="/logout">
     <input type="submit" value="Log-out">
   </form>
+
+  <script>
+    function confirmSubmit() {
+      return confirm("Are you sure you want to send out this email?");
+    }
+  </script>
 {% endblock %}

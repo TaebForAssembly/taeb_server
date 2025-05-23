@@ -52,7 +52,7 @@ def later_than_now(_form, field):
 class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
     content = TextAreaField('Content', validators=[Length(message='Content must be at least 5 characters', min=5)])
-    datetime = DateTimeLocalField('Schedule Date', validators=[DataRequired(message='Schedule date must be specified'), later_than_now])
+    datetime = DateTimeLocalField('Schedule Date', validators=[Optional(), later_than_now])
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
