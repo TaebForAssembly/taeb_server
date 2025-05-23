@@ -40,14 +40,17 @@
         </label>
         <label>
             ZIP Code <i>(required)</i>
-            <input type="text" name="zip" class="form-control" required pattern="\d{5}(-\d{4})?"/>
+            <input type="text" name="zip" class="form-control" required pattern="\d{5}(-\d{4})?"
+                data-parsley-error-message="Zip code is required and must be in form XXXXX or XXXXX-XXXX"
+            />
         </label>
     </div>
 
     <h1>Contact Information</h1>
     <label>
         Email <i>(required)</i>
-        <input type="email" name="email" class="form-control" required maxlength="254"/>
+        <input type="email" name="email" class="form-control" required maxlength="254"
+            data-parsley-error-message="Email is required and must be in form X@Y.Z"/>
     </label>
 
     <label>
