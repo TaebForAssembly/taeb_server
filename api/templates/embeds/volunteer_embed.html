@@ -7,28 +7,28 @@
     <div class="form_flex">
         <label>
             First Name
-            <input type="text" name="first_name" class="form-control" required/>
+            <input type="text" name="first_name" class="form-control" required minlength="1" maxlength="50"/>
         </label>
         <label>
             Last Name 
-            <input type="text" name="last_name" class="form-control" required/>
+            <input type="text" name="last_name" class="form-control" required  minlength="1" maxlength="50"/>
         </label>
     </div>
     
     <h1>Address</h1>
     <label>
         Address Line 1 <i>(required)</i>
-        <input type="text" name="address1" class="form-control" required/>
+        <input type="text" name="address1" class="form-control" required minlength="1" maxlength="100"/>
     </label>
     <label>
         Address Line 2 
-        <input type="text" name="address2" class="form-control"/>
+        <input type="text" name="address2" class="form-control" minlength="1" maxlength="100"/>
     </label>
     
     <div class="form_flex">
         <label>
             City <i>(required)</i>
-            <input type="text" name="city" class="form-control" required/>
+            <input type="text" name="city" class="form-control" required minlength="1" maxlength="100"/>
         </label>
         <label>
             State <i>(required)</i>
@@ -40,14 +40,14 @@
         </label>
         <label>
             ZIP Code <i>(required)</i>
-            <input type="text" name="zip" class="form-control" required/>
+            <input type="text" name="zip" class="form-control" required pattern="\d{5}(-\d{4})?"/>
         </label>
     </div>
 
     <h1>Contact Information</h1>
     <label>
         Email <i>(required)</i>
-        <input type="email" name="email" class="form-control" required/>
+        <input type="email" name="email" class="form-control" required maxlength="254"/>
     </label>
 
     <label>
@@ -57,13 +57,13 @@
 
     <h1>About You</h1>
     <label>
-        Tell us a bit about yourself
-        <textarea name="personal" class="form-control" required></textarea>
+        Tell us a bit about yourself <i>(2000 characters max)</i>
+        <textarea name="personal" class="form-control" maxlength="2000"></textarea>
     </label>
 
     <label>
-        Describe your availability
-        <textarea name="availability" class="form-control" required></textarea>
+        Describe your availability <i>(required, 2000 characters max)</i>
+        <textarea name="availability" class="form-control" required minlength="1" maxlength="2000"></textarea>
     </label>
 
     <label>Which tasks would you like to participate in? <i>(click at least one)</i></label>
@@ -102,23 +102,6 @@
 <script type="text/javascript">
     let form = $('#taeb_server_volunteer_form_embed');
 
-    function parseData(formData) {
-        const obj = {};
-
-        for (const [key, value] of formData.entries()) {
-            const arrayMatch = key.match(/^(.+)\[\]$/);
-            if (arrayMatch) {
-                const name = arrayMatch[1];
-                if (!obj[name]) obj[name] = [];
-                obj[name].push(value);
-            } else {
-                obj[key] = value;
-            }
-        }
-
-        return obj;
-    }
-
     async function postVolunteer(data) {
         let formData = Object.fromEntries(data);
         formData = {address1 : formData["address1"]}
@@ -134,10 +117,9 @@
         form.parsley().on('form:submit', function() {
             let data = new FormData(document.getElementById("taeb_server_volunteer_form_embed"));
 
-            print(JSON.stringify(data));
             fetch(`http://127.0.0.1:5000/volunteer`, {
                 method: "POST",
-                body: JSON.stringify(data)
+                body: data
             }).then(r => r.json()).then(r => console.log(r));
 
             return false;

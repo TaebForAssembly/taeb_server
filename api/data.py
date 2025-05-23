@@ -57,3 +57,10 @@ state_dict : dict[str, str] = {
     "VI": "U.S. Virgin Islands",
 }
 
+activities = [
+    "phone_banking",
+    "event_coordination",
+    "lawn_sign_delivery",
+    "meet_and_greet_host",
+    "canvassing",
+]

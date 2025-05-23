@@ -1,37 +1,55 @@
 from flask import Blueprint, request
 from webargs.flaskparser import abort, parser, use_args, use_kwargs
-from webargs import fields, validate
-from .data import state_dict
+from .data import state_dict, activities
+from marshmallow import Schema, fields, validate, pre_load, ValidationError
+
+import sys
 
 bp = Blueprint('volunteer', __name__, url_prefix='/volunteer')
 
-user_args = {
-    #  name
-    "first_name" : fields.Str(required=True),
-    "last_name" : fields.Str(required=True),
+def no_duplicates(v):
+    if len(v) != len(set(v)):
+        raise ValidationError("List must not contain duplicate items")
+
+class VolunteerSchema(Schema):
+    first_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    last_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
 
     # address
-    "address1" : fields.Str(required=True),
-    "address2" : fields.Str(),
-    "city" : fields.Str(required=True),
-    "state" : fields.Str(required=True, validate=validate.OneOf(state_dict.keys())),
-    "zip" : fields.Str(required=True),
+    address1 = fields.Str(required=True, validate=validate.Length(min=1, max=100))
+    address2 = fields.Str(validate=validate.Length(min=1, max=100))
+    city = fields.Str(required=True, validate=validate.Length(min=1, max=100))
+    state = fields.Str(required=True, validate=validate.OneOf(state_dict.keys()))
+    zip = fields.Str(required=True, validate=validate.Regexp(r"\d{5}(-\d{4})?"))
 
     # contact information
-    "email" : fields.Email(required=True),
-    "phone" : fields.Str(required=True),
+    email = fields.Email(required=True, validate=validate.Length(max=254))
+    phone = fields.Str(required=True, validate=validate.Regexp(r"[0-9]{10}"))
 
     # about
-    "personal" : fields.Str(required=True),
-    "availability" : fields.Str(required=True),
-    "tasks": fields.List(fields.Str())
-}
+    personal = fields.Str(required=True, validate=validate.Length(max=2000))
+    availability = fields.Str(required=True, validate=validate.Length(max=2000))
+    tasks = fields.List(fields.Str(validate=validate.OneOf(activities)), validate=[validate.Length(min=1), no_duplicates])
+
+    @pre_load
+    def trim_inputs(self, in_data, **kwargs):
+        out = {}
+        for k,v in in_data.items():
+            if isinstance(v, str):
+                if v.strip():
+                    out[k] = v.strip()
+            elif isinstance(v, list) and all(isinstance(v_item, str) for v_item in v):
+                out[k] = [v_item.strip() for v_item in v]
+            else:
+                out[k] = v
+        return out
+    
 
 @bp.route('/', methods=["POST"])
-@use_args(user_args, location='form')
+@use_args(VolunteerSchema(), location='form')
 def add_volunteer(args):
     return args
 
 @parser.error_handler
 def handle_request_parsing_error(err, req, schema, *, error_status_code, error_headers):
-    abort(error_status_code, errors=err.messages)
+    raise Exception(err.messages)
