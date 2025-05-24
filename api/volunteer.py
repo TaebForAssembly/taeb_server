@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from webargs.flaskparser import abort, parser, use_args, use_kwargs
 from .data import state_dict, activities
 from marshmallow import Schema, fields, validate, pre_load, ValidationError
-from .db import supabase
+from .db import supabase_admin
 from supabase import PostgrestAPIError
 
 bp = Blueprint('volunteer', __name__, url_prefix='/volunteer')
@@ -52,7 +52,7 @@ class VolunteerSchema(Schema):
 @use_args(VolunteerSchema(), location='form')
 def add_volunteer(args):
     response = (
-        supabase.table("volunteers")
+        supabase_admin.table("volunteers")
         .insert(args)
         .execute()
     )
@@ -68,12 +68,13 @@ def handle_error(err):
     headers = err.data.get("headers", None)
     messages = err.data.get("messages", ["Invalid request."])
     if headers:
-        return jsonify({"success": False, "errors": messages}), err.code, headers
+        return jsonify({"success": False, "message" : "Error validating inputs", "errors": messages}), err.code, headers
     else:
-        return jsonify({"success": False, "errors": messages}), err.code
+        return jsonify({"success": False, "message" : "Error validating inputs", "errors": messages}), err.code
 
 @bp.errorhandler(PostgrestAPIError)
 def handle_supabase_err(err):
     err_dict = err.json()
     err_dict["success"] = False
-    return jsonify(err_dict), 400
+    err_dict["message"] =  "Error submitting to our database, try again later!" if err.code != "23505" else "Duplicate email found, please use a unique email"
+    return jsonify(err_dict), 500

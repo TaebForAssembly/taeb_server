@@ -64,6 +64,10 @@ form {
     color: white;
 }
 
+.center {
+    text-align: center;
+}
+
 button {
     background-color: #FDB907;
     color: black;
@@ -145,4 +149,9 @@ textarea.form-control:focus {
 #task-selector {
     padding: 1rem;
     border-radius: 1rem;
+}
+
+.error-message {
+    margin: 0.5rem;
+    color: #F2DEDE;
 }
