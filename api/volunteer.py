@@ -76,5 +76,12 @@ def handle_error(err):
 def handle_supabase_err(err):
     err_dict = err.json()
     err_dict["success"] = False
-    err_dict["message"] =  "Error submitting to our database, try again later!" if err.code != "23505" else "Duplicate email found, please use a unique email"
+
+    if err.details is not None:
+        err_dict["message"] = f"Server Error: {err.details}"
+    elif err.code == "23505":
+        err_dict["message"] = "Duplicate email found, please use a unique email"
+    else:
+        err_dict["message"] = "Error submitting to our database, try again later!"
+
     return jsonify(err_dict), 500
