@@ -1,4 +1,6 @@
 from marshmallow import ValidationError
+import pytz
+import datetime
 
 state_dict : dict[str, str] = {
     "AK": "Alaska",
@@ -114,3 +116,8 @@ def trim_inputs(in_data):
 def no_duplicates(v):
     if len(v) != len(set(v)):
         raise ValidationError("List must not contain duplicate items")
+
+def later_than_now(_form, field):
+    our_timezone = pytz.timezone("America/New_York")
+    if datetime.now().astimezone(our_timezone) > our_timezone.localize(field.data):
+        raise ValidationError("Date must be later than now")

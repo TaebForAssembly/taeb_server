@@ -10,16 +10,10 @@ from markupsafe import Markup
 from bs4 import BeautifulSoup
 import os
 import re
-from datetime import datetime
 import pytz
-from .data import social_links
+from .data import social_links, later_than_now
 
 resend.api_key = os.environ.get("RESEND_KEY")
-
-def later_than_now(_form, field):
-    our_timezone = pytz.timezone("America/New_York")
-    if datetime.now().astimezone(our_timezone) > our_timezone.localize(field.data):
-        raise ValidationError("Date must be later than now")
 
 class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
