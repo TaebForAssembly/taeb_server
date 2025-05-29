@@ -1,15 +1,11 @@
 from flask import Blueprint, request, jsonify
 from webargs.flaskparser import abort, parser, use_args, use_kwargs
-from .data import state_dict, activities
+from .data import state_dict, activities, trim_inputs, no_duplicates
 from marshmallow import Schema, fields, validate, pre_load, ValidationError
 from .db import supabase_admin
 from supabase import PostgrestAPIError
 
 bp = Blueprint('volunteer', __name__, url_prefix='/volunteer')
-
-def no_duplicates(v):
-    if len(v) != len(set(v)):
-        raise ValidationError("List must not contain duplicate items")
 
 class VolunteerSchema(Schema):
     first_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
@@ -32,21 +28,8 @@ class VolunteerSchema(Schema):
     tasks = fields.List(fields.Str(validate=validate.OneOf(activities)), required=True, validate=[validate.Length(min=1), no_duplicates])
 
     @pre_load
-    def trim_inputs(self, in_data, **kwargs):
-        out = {}
-        for k,v in in_data.items():
-            # if string, strip it
-            # if stripped is empty, don't add to out
-            if isinstance(v, str):
-                if v.strip():
-                    out[k] = v.strip()
-            # else if a list of strings, map strings to trimmed strings
-            elif isinstance(v, list) and all(isinstance(v_item, str) for v_item in v):
-                out[k] = [v_item.strip() for v_item in v]
-            # Otherwise, add as is to outputS
-            else:
-                out[k] = v
-        return out
+    def trim_load(self, in_data, **kwargs):
+        return trim_inputs(in_data)
 
 @bp.route('/', methods=["POST"])
 @use_args(VolunteerSchema(), location='form')

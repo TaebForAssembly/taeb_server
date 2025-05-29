@@ -1,3 +1,5 @@
+from marshmallow import ValidationError
+
 state_dict : dict[str, str] = {
     "AK": "Alaska",
     "AL": "Alabama",
@@ -92,3 +94,23 @@ social_links = [
         "image": "https://img.icons8.com/?size=30&id=phOKFKYpe00C&format=png&color=012852"
     },
 ]
+
+def trim_inputs(in_data):
+    out = {}
+    for k,v in in_data.items():
+        # if string, strip it
+        # if stripped is empty, don't add to out
+        if isinstance(v, str):
+            if v.strip():
+                out[k] = v.strip()
+        # else if a list of strings, map strings to trimmed strings
+        elif isinstance(v, list) and all(isinstance(v_item, str) for v_item in v):
+            out[k] = [v_item.strip() for v_item in v]
+        # Otherwise, add as is to outputS
+        else:
+            out[k] = v
+    return out
+
+def no_duplicates(v):
+    if len(v) != len(set(v)):
+        raise ValidationError("List must not contain duplicate items")
