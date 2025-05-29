@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'form.html' %}
 
-{% block content %}
-<form>
-    <label>
-        Test Email Recipient: 
-        <input type="email" name="email">
-    </label>
+{% block form_content %}
+<h1>Send Preview Email</h1>
+<form method="post">
+    <label for="email">Email: </label>
+    <input id="email" type="email" name="email">
+
     <input type="hidden" name="content" value={{content.strip()}} >
     <input type="hidden" name="subject" value={{subject.strip()}} >
-    <input type="submit" >
+    <input type="submit" value="Send">
 </form>
 
 {% include 'email/mailing_list.html' %}

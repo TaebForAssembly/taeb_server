@@ -52,7 +52,7 @@ def mailing_list():
             "from": "Freshta Taeb <news@taebforassembly.com>",
             "subject": form.subject.data,
             "name": form.subject.data,
-            "html": render_template("email/mailing_list_full.html", html_content=html_content, social_links=social_links),
+            "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links),
         }
 
         try:
@@ -86,12 +86,29 @@ def check_email():
     content = request.args.get("content")
     subject = request.args.get("subject")
     html_content = email_content(content)
-    form = PreviewForm()
+    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links)
 
-    if form.validate_on_submit():
-        flash("hello")
+@bp.route('/preview', methods=["POST"])
+def send_preview_email():
+    content = request.form.get("content")
+    subject = request.form.get("subject")
+    email = request.form.get("email")
+    html_content = email_content(content)
 
-    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
+    params: resend.Emails.SendParams = {
+        "from": "Freshta Taeb <test@taebforassembly.com>",
+        "to": [email],
+        "subject": subject,
+        "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
+    }
+
+    try:
+        resend.Emails.send(params)
+        flash("Email sent")
+    except:
+        flash("Email couldn't be sent")
+
+    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links)
 
 @bp.route('/users', methods=["POST"])
 def add_user():
