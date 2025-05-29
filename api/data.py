@@ -64,3 +64,31 @@ activities = [
     "meet_and_greet_host",
     "canvassing",
 ]
+
+social_links = [
+    # facebook
+    {
+        "url": "https://www.facebook.com/people/Freshta-Taeb/pfbid0pbEhVeAoyC1zNs4txi2AXAyxEFzweoWXjc68M7W6dDjDsDycDqwCqJaZCSGrsS7hl/",
+        "image": "https://img.icons8.com/?size=30&id=118466&format=png&color=012852"
+    },
+    # instagram
+    {
+        "url": "https://www.instagram.com/taeb4assembly/",
+        "image": "https://img.icons8.com/?size=30&id=32309&format=png&color=012852"
+    },
+    # linkedin
+    {
+        "url": "https://www.linkedin.com/company/taeb-for-assembly/posts/?feedView=all",
+        "image": "https://img.icons8.com/?size=30&id=8808&format=png&color=012852"
+    },
+    # tiktok
+    {
+        "url": "https://www.tiktok.com/@taeb4assembly",
+        "image": "https://img.icons8.com/?size=30&id=118638&format=png&color=012852"
+    },
+    # X
+    {
+        "url": "https://www.tiktok.com/@taeb4assembly",
+        "image": "https://img.icons8.com/?size=30&id=phOKFKYpe00C&format=png&color=012852"
+    },
+]
