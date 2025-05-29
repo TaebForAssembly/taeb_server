@@ -8,7 +8,7 @@
   <script>
     function preventSubmitOnEnter(event) {
       if(event.keyCode === 13 && event.target && event.target.tagName && event.target.tagName.toLowerCase() !== "textarea")
-      { console.log(event.target); return false; }
+      { return false; }
     }
   </script>
 

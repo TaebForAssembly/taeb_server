@@ -43,7 +43,6 @@ social_links = [
     },
 ]
 
-
 def later_than_now(_form, field):
     our_timezone = pytz.timezone("America/New_York")
     if datetime.now().astimezone(our_timezone) > our_timezone.localize(field.data):
@@ -56,13 +55,13 @@ class MailingListForm(FlaskForm):
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
-def render_email(content):
+def email_content(content):
     html_content = markdown.markdown(content)
     soup = BeautifulSoup(html_content, 'html.parser')
     for img in soup.find_all('img'):
         img['width'] = '100%'
     html_content = str(soup)
-    return render_template("email/mailing_list_preview.html", content=Markup(markdown.markdown(html_content)), social_links=social_links)
+    return Markup(markdown.markdown(html_content))
 
 @bp.route('/', methods=["GET", "POST"])
 def mailing_list():
@@ -74,12 +73,13 @@ def mailing_list():
 
     # if form was submitted correctly
     if form.validate_on_submit():
+        html_content = email_content(form.content.d)
         params: resend.Broadcasts.CreateParams = {
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
             "from": "Freshta Taeb <news@taebforassembly.com>",
             "subject": form.subject.data,
             "name": form.subject.data,
-            "html": render_email(form.content.data),
+            "html": render_template("email/mailing_list_full.html", html_content=html_content, social_links=social_links),
         }
 
         try:
@@ -109,7 +109,9 @@ def mailing_list():
 @bp.route('/preview', methods=["GET"])
 def check_email():
     content = request.args.get("content")
-    return render_email(content)
+    subject = request.args.get("subject")
+    html_content = email_content(content)
+    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links)
 
 @bp.route('/users', methods=["POST"])
 def add_user():
