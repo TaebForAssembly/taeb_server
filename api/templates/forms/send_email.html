@@ -5,7 +5,14 @@
 {% endblock %}
 
 {% block form_content %}
-  <form method="post" autocomplete="off">
+  <script>
+    function preventSubmitOnEnter(event) {
+      if(event.keyCode === 13 && event.target && event.target.tagName && event.target.tagName.toLowerCase() !== "textarea")
+      { console.log(event.target); return false; }
+    }
+  </script>
+
+  <form method="post" autocomplete="off" onkeydown="return preventSubmitOnEnter(event)">
     {{ form.csrf_token }}
     {{ form.subject.label }} {{ form.subject(size=20) }}
     {{ form.content.label }} {{ form.content(size=20) }}
