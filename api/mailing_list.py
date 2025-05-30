@@ -1,17 +1,25 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
+
 from flask_wtf import FlaskForm
-import resend.exceptions
 from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationError, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional
+
+from webargs.flaskparser import parser
+from marshmallow import fields
+
 from .db import signed_in, get_db
+from .data import social_links, later_than_now
+
+import resend.exceptions
 import resend
+
 import markdown
 from markupsafe import Markup
 from bs4 import BeautifulSoup
+
 import os
 import re
 import pytz
-from .data import social_links, later_than_now
 
 resend.api_key = os.environ.get("RESEND_KEY")
 
@@ -81,6 +89,9 @@ def mailing_list():
 
 class PreviewForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
+preview_schema = {
+    "content" : fields.Str
+}
 @bp.route('/preview', methods=["GET", "POST"])
 def check_email():
     content = request.args.get("content")
