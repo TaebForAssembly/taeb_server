@@ -100,17 +100,18 @@ preview_schema = {
 }
 @bp.route('/preview', methods=["GET", "POST"])
 def check_email():
+    # Perform validation on querystring
     try:
         args = parser.parse(preview_schema, location='querystring')
     except Exception as e:
         return f"Validation Error: {e}", 400
     
+    # get inputs for operations
     content = args["content"]
     subject = args["subject"]
-
     html_content = email_content(content)
+    
     form = PreviewForm()
-
     if form.validate_on_submit():
         params: resend.Emails.SendParams = {
             "from": "Freshta Taeb <test@taebforassembly.com>",
@@ -119,12 +120,14 @@ def check_email():
             "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
         }
 
+        # Try sending the email to inputted email
         try:
             resend.Emails.send(params)
             flash("Email sent")
         except resend.exceptions.ResendError:
             flash("Email couldn't be sent")
 
+    # Return preview and form to send preview to an email
     return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
 
 # Add user to mailing list
