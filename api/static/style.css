@@ -41,3 +41,8 @@ h1 {
     width: 100%;
     text-align: center;
 }
+
+.form_content textarea {
+    height: 20rem;
+    min-height: 5rem;
+}

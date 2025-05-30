@@ -25,8 +25,13 @@ bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 def email_content(content):
     html_content = markdown.markdown(content)
     soup = BeautifulSoup(html_content, 'html.parser')
+    drive_regex = r"https:\/\/drive.google.com\/file\/d\/([^\/]+)\/"
     for img in soup.find_all('img'):
         img['width'] = '100%'
+        search = re.search(drive_regex, img["src"])
+        if search is not None:
+            src_id = search.group(1)
+            img['src'] = f"https://drive.google.com/thumbnail?id={src_id}&sz=w1000"
     html_content = str(soup)
     return Markup(markdown.markdown(html_content))
 
@@ -75,34 +80,28 @@ def mailing_list():
 
 class PreviewForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
-@bp.route('/preview', methods=["GET"])
+@bp.route('/preview', methods=["GET", "POST"])
 def check_email():
     content = request.args.get("content")
     subject = request.args.get("subject")
     html_content = email_content(content)
-    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links)
+    form = PreviewForm()
 
-@bp.route('/preview', methods=["POST"])
-def send_preview_email():
-    content = request.form.get("content")
-    subject = request.form.get("subject")
-    email = request.form.get("email")
-    html_content = email_content(content)
+    if form.validate_on_submit():
+        params: resend.Emails.SendParams = {
+            "from": "Freshta Taeb <test@taebforassembly.com>",
+            "to": [form.email.data],
+            "subject": f"[TEST]: {subject}",
+            "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
+        }
 
-    params: resend.Emails.SendParams = {
-        "from": "Freshta Taeb <test@taebforassembly.com>",
-        "to": [email],
-        "subject": subject,
-        "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
-    }
+        try:
+            resend.Emails.send(params)
+            flash("Email sent")
+        except:
+            flash("Email couldn't be sent")
 
-    try:
-        resend.Emails.send(params)
-        flash("Email sent")
-    except:
-        flash("Email couldn't be sent")
-
-    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links)
+    return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
 
 @bp.route('/users', methods=["POST"])
 def add_user():
