@@ -142,13 +142,19 @@ def add_user():
         return { "success" : False, "message": "Email must be in \"_@_\" format" }, 400
     
     # send to mailing list
-    params: resend.Contacts.CreateParams = {
-        "email": email,
-        "unsubscribed": False,
-        "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
-    }
-    response = resend.Contacts.create(params)
-    return {
-        "response" : response,
-        "success" : True
-    }
+    try:
+        params: resend.Contacts.CreateParams = {
+            "email": email,
+            "unsubscribed": False,
+            "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
+        }
+        response = resend.Contacts.create(params)
+        return {
+            "response" : response,
+            "success" : True
+        }
+    except resend.exceptions.ResendError:
+        return {
+            "message" : "Error adding user",
+            "success" : False
+        }
