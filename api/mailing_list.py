@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationError, EmailField, BooleanField
@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, Length, Optional
 from webargs.flaskparser import parser
 from marshmallow import fields, validate
 
-from .db import signed_in, get_db
+from .db import signed_in
 from .data import social_links, later_than_now
 
 import resend.exceptions
@@ -31,6 +31,8 @@ class MailingListForm(FlaskForm):
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
+# HTML content of email given text content
+# Replace google drive links with thumbnail links
 def email_content(content):
     html_content = markdown.markdown(content)
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -44,6 +46,7 @@ def email_content(content):
     html_content = str(soup)
     return Markup(markdown.markdown(html_content))
 
+# Send to list
 @bp.route('/', methods=["GET", "POST"])
 def mailing_list():
     # ensure user has access
@@ -54,6 +57,7 @@ def mailing_list():
 
     # if form was submitted correctly
     if form.validate_on_submit():
+        # create broadcast inputs
         html_content = email_content(form.content.data)
         params: resend.Broadcasts.CreateParams = {
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
@@ -63,30 +67,31 @@ def mailing_list():
             "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links),
         }
 
+        # try creating broadcast
         try:
             email = resend.Broadcasts.create(params)
         except resend.exceptions.ResendError as err:
-            flash(f"Error sending broadcast: {err}")
-            return render_template("forms/send_email.html", form=form)
+            return render_template("forms/send_email.html", form=form, error=f"Error creating broadcast: {err}")
 
-        params: resend.Broadcasts.SendParams = {
-            "broadcast_id": email["id"]
-        }
+        # send broadcast inputs (taking id from response)
+        params: resend.Broadcasts.SendParams = { "broadcast_id": email["id"] }
         if form.datetime.data is not None:
             params["scheduled_at"] = pytz.timezone("America/New_York").localize(form.datetime.data).isoformat()
 
+        # try sending broadcast with id
         try:
             resend.Broadcasts.send(params)
         except resend.exceptions.ResendError as err:
-            flash(f"Error sending broadcast: {err}")
-            return render_template("forms/send_email.html", form=form)
+            return render_template("forms/send_email.html", form=form, error=f"Error sending broadcast: {err}")
         
+        # refresh with flashed method
         flash(f"Broadcast with id \"{email["id"]}\" successfully sent")
         return redirect(url_for("mailing_list.mailing_list"))
 
     # else return the corm
     return render_template("forms/send_email.html", form=form)
 
+# Preview Email
 class PreviewForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
 preview_schema = {
@@ -122,6 +127,7 @@ def check_email():
 
     return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
 
+# Add user to mailing list
 @bp.route('/users', methods=["POST"])
 def add_user():
     # error testing
