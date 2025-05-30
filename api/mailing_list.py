@@ -5,7 +5,7 @@ from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationEr
 from wtforms.validators import DataRequired, Length, Optional
 
 from webargs.flaskparser import parser
-from marshmallow import fields
+from marshmallow import fields, validate
 
 from .db import signed_in, get_db
 from .data import social_links, later_than_now
@@ -27,7 +27,7 @@ class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
     content = TextAreaField('Content', validators=[Length(message='Content must be at least 5 characters', min=5)])
     datetime = DateTimeLocalField('Schedule Date', validators=[Optional(), later_than_now])
-    confirm = BooleanField('Confirm', validators=[DataRequired("You must confirm to continue")])
+    confirm = BooleanField('Confirm')
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 
@@ -90,12 +90,19 @@ def mailing_list():
 class PreviewForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
 preview_schema = {
-    "content" : fields.Str
+    "subject" : fields.Str(required=True),
+    "content" : fields.Str(required=True, validate=[validate.Length(min=5)])
 }
 @bp.route('/preview', methods=["GET", "POST"])
 def check_email():
-    content = request.args.get("content")
-    subject = request.args.get("subject")
+    try:
+        args = parser.parse(preview_schema, location='querystring')
+    except Exception as e:
+        return f"Validation Error: {e}", 400
+    
+    content = args["content"]
+    subject = args["subject"]
+
     html_content = email_content(content)
     form = PreviewForm()
 
@@ -110,7 +117,7 @@ def check_email():
         try:
             resend.Emails.send(params)
             flash("Email sent")
-        except:
+        except resend.exceptions.ResendError:
             flash("Email couldn't be sent")
 
     return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
