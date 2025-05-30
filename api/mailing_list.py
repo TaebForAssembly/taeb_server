@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationError, EmailField, BooleanField
+from wtforms import StringField, TextAreaField, DateTimeLocalField, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional
 
-from webargs.flaskparser import parser
+from webargs.flaskparser import parser, use_kwargs
 from marshmallow import fields, validate
 
 from .db import signed_in
@@ -132,15 +132,8 @@ def check_email():
 
 # Add user to mailing list
 @bp.route('/users', methods=["POST"])
-def add_user():
-    # error testing
-    email = request.form.get("email")
-    email_regex = r".+@.+"
-    if email is None:
-        return { "success" : False, "message": "Email must be supplied" }, 400
-    elif re.search(email_regex, email) is None:
-        return { "success" : False, "message": "Email must be in \"_@_\" format" }, 400
-    
+@use_kwargs({ "email": fields.Email(required=True) }, location='form')
+def add_user(email):
     # send to mailing list
     try:
         params: resend.Contacts.CreateParams = {
@@ -158,3 +151,13 @@ def add_user():
             "message" : "Error adding user",
             "success" : False
         }
+    
+@bp.errorhandler(422)
+@bp.errorhandler(400)
+def handle_error(err):
+    headers = err.data.get("headers", None)
+    messages = err.data.get("messages", ["Invalid request."])
+    if headers:
+        return jsonify({"success": False, "message" : "Error validating inputs", "errors": messages}), err.code, headers
+    else:
+        return jsonify({"success": False, "message" : "Error validating inputs", "errors": messages}), err.code
