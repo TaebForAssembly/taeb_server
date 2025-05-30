@@ -5,10 +5,9 @@
 <form method="post">
     {{ form.csrf_token }}
     {{ form.email.label }} {{ form.email(size=20) }}
-    <input type="hidden" name="content" value={{content.strip()}} >
-    <input type="hidden" name="subject" value={{subject.strip()}} >
     <input type="submit" value="Send">
 </form>
 
+<p>Subject: {{subject}}</p>
 {% include 'email/mailing_list.html' %}
 {% endblock %}
