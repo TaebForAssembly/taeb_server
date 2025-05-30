@@ -10,9 +10,26 @@
       if(event.keyCode === 13 && event.target && event.target.tagName && event.target.tagName.toLowerCase() !== "textarea")
       { return false; }
     }
+
+    function confirmSubmit(form) {
+      const formData = new FormData(form);
+      const date_field = formData.get("datetime");
+
+      let message;
+      if (date_field) {
+        const d = date_field.split(/[-:T]/);
+        const date = new Date(d[0], d[1]-1, d[2], d[3], 0, 0);
+        message = `Schedule email for ${date.toString()}?`;
+      }
+      else {
+        message = `Send email now?`;
+      }
+
+      return confirm(message);
+    }
   </script>
 
-  <form method="post" autocomplete="off" onkeydown="return preventSubmitOnEnter(event)">
+  <form method="post" autocomplete="off" onkeydown="return preventSubmitOnEnter(event)" onsubmit="return confirmSubmit(this)">
     {{ form.csrf_token }}
     {{ form.subject.label }} {{ form.subject(size=20) }}
     {{ form.content.label }} {{ form.content(size=20) }}

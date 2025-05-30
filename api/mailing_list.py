@@ -46,7 +46,7 @@ def mailing_list():
 
     # if form was submitted correctly
     if form.validate_on_submit():
-        html_content = email_content(form.content.d)
+        html_content = email_content(form.content.data)
         params: resend.Broadcasts.CreateParams = {
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
             "from": "Freshta Taeb <news@taebforassembly.com>",
@@ -55,7 +55,7 @@ def mailing_list():
             "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links),
         }
 
-        try:
+        '''try:
             email = resend.Broadcasts.create(params)
         except resend.exceptions.ResendError as err:
             flash(f"Error sending broadcast: {err}")
@@ -74,7 +74,7 @@ def mailing_list():
             return render_template("forms/send_email.html", form=form)
         
         flash(f"Broadcast with id \"{email["id"]}\" successfully sent")
-        return redirect(url_for("mailing_list.mailing_list"))
+        return redirect(url_for("mailing_list.mailing_list"))'''
 
     # else return the corm
     return render_template("forms/send_email.html", form=form)
