@@ -11,8 +11,10 @@
       { return false; }
     }
 
-    function confirmSubmit(form) {
-      const formData = new FormData(form);
+    function confirmSubmit(event) {
+      if (event.submitter.formMethod.toLowerCase()=="get") return true;
+
+      const formData = new FormData(event.target);
       const date_field = formData.get("datetime");
 
       let message;
@@ -29,7 +31,7 @@
     }
   </script>
 
-  <form method="post" autocomplete="off" onkeydown="return preventSubmitOnEnter(event)" onsubmit="return confirmSubmit(this)">
+  <form method="post" autocomplete="off" onkeydown="return preventSubmitOnEnter(event)" onsubmit="return confirmSubmit(event)">
     {{ form.csrf_token }}
     {{ form.subject.label }} {{ form.subject(size=20) }}
     {{ form.content.label }} {{ form.content(size=20) }}
