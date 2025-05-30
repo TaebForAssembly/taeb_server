@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash
 from flask_wtf import FlaskForm
 import resend.exceptions
-from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationError, EmailField
+from wtforms import StringField, TextAreaField, DateTimeLocalField, ValidationError, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional
 from .db import signed_in, get_db
 import resend
@@ -19,6 +19,7 @@ class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
     content = TextAreaField('Content', validators=[Length(message='Content must be at least 5 characters', min=5)])
     datetime = DateTimeLocalField('Schedule Date', validators=[Optional(), later_than_now])
+    confirm = BooleanField('Confirm', validators=[DataRequired("You must confirm to continue")])
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
 

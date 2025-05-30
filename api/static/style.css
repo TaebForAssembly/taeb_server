@@ -46,3 +46,9 @@ h1 {
     height: 20rem;
     min-height: 5rem;
 }
+
+.form_content input[type=checkbox] {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+}
