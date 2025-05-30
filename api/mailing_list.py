@@ -55,7 +55,7 @@ def mailing_list():
             "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links),
         }
 
-        '''try:
+        try:
             email = resend.Broadcasts.create(params)
         except resend.exceptions.ResendError as err:
             flash(f"Error sending broadcast: {err}")
@@ -74,7 +74,7 @@ def mailing_list():
             return render_template("forms/send_email.html", form=form)
         
         flash(f"Broadcast with id \"{email["id"]}\" successfully sent")
-        return redirect(url_for("mailing_list.mailing_list"))'''
+        return redirect(url_for("mailing_list.mailing_list"))
 
     # else return the corm
     return render_template("forms/send_email.html", form=form)
