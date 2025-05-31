@@ -1,5 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'form.html' %}
 
-{% block content %}
+{% block header %}
+  <h1>{% block title %}Send Preview Email{% endblock %}</h1>
+{% endblock %}
+
+{% block form_content %}
+<form method="post">
+    {{ form.csrf_token }}
+    {{ form.email.label }} {{ form.email(size=20) }}
+    <input type="submit" value="Send">
+</form>
+
+<p><b>Subject:</b> {{subject}}</p>
 {% include 'email/mailing_list.html' %}
 {% endblock %}
