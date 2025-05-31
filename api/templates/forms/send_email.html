@@ -16,9 +16,9 @@
 
       const formData = new FormData(event.target);
       const date_field = formData.get("datetime");
-      const confirm = formData.get("confirm");
+      const confirm_field = formData.get("confirm");
 
-      if (!confirm) return false;
+      if (!confirm_field) return false;
 
       let message;
       if (date_field) {

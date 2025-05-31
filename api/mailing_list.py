@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DateTimeLocalField, EmailField, BooleanField
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms.validators import DataRequired, Length, Optional, Regexp
 
 from webargs.flaskparser import parser, use_kwargs
 from marshmallow import fields, validate
@@ -25,7 +25,7 @@ resend.api_key = os.environ.get("RESEND_KEY")
 
 class MailingListForm(FlaskForm):
     subject = StringField('Subject', validators=[DataRequired(message='Subject must be specified')])
-    content = TextAreaField('Content', validators=[Length(message='Content must be at least 5 characters', min=5)])
+    content = TextAreaField('Content', validators=[DataRequired(message='Content must be specified'), Length(message='Content must be at least 5 characters', min=5)])
     datetime = DateTimeLocalField('Schedule Date', validators=[Optional(), later_than_now])
     confirm = BooleanField('Confirm')
 
@@ -66,7 +66,7 @@ def mailing_list():
             "name": form.subject.data,
             "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links),
         }
-
+    
         # try creating broadcast
         try:
             email = resend.Broadcasts.create(params)
@@ -93,7 +93,7 @@ def mailing_list():
 
 # Preview Email
 class PreviewForm(FlaskForm):
-    email = EmailField('Email', validators=[DataRequired()])
+    email = EmailField('Email', validators=[DataRequired(), Regexp(r".+@.+\..+")])
 preview_schema = {
     "subject" : fields.Str(required=True),
     "content" : fields.Str(required=True, validate=[validate.Length(min=5)])
@@ -124,8 +124,8 @@ def check_email():
         try:
             resend.Emails.send(params)
             flash("Email sent")
-        except resend.exceptions.ResendError:
-            flash("Email couldn't be sent")
+        except resend.exceptions.ResendError as e:
+            flash(f"Email couldn't be sent: {e}")
 
     # Return preview and form to send preview to an email
     return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
