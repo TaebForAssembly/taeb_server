@@ -1,6 +1,6 @@
-from marshmallow import ValidationError
+from wtforms import ValidationError
 import pytz
-import datetime
+from datetime import datetime, timedelta
 
 state_dict : dict[str, str] = {
     "AK": "Alaska",
@@ -119,5 +119,5 @@ def no_duplicates(v):
 
 def later_than_now(_form, field):
     our_timezone = pytz.timezone("America/New_York")
-    if datetime.now().astimezone(our_timezone) > our_timezone.localize(field.data):
-        raise ValidationError("Date must be later than now")
+    if datetime.now().astimezone(our_timezone) + timedelta(minutes=5) > our_timezone.localize(field.data):
+        raise ValidationError("Date must be later than 5 minutes from now")
