@@ -8,17 +8,12 @@ from webargs.flaskparser import parser, use_kwargs
 from marshmallow import fields, validate
 
 from .db import signed_in
-from .data import social_links, later_than_now
+from .data import social_links, later_than_now, email_content
 
 import resend.exceptions
 import resend
 
-import markdown
-from markupsafe import Markup
-from bs4 import BeautifulSoup
-
 import os
-import re
 import pytz
 
 resend.api_key = os.environ.get("RESEND_KEY")
@@ -30,21 +25,6 @@ class MailingListForm(FlaskForm):
     confirm = BooleanField('Confirm')
 
 bp = Blueprint('mailing_list', __name__, url_prefix='/mailing_list')
-
-# HTML content of email given text content
-# Replace google drive links with thumbnail links
-def email_content(content):
-    html_content = markdown.markdown(content)
-    soup = BeautifulSoup(html_content, 'html.parser')
-    drive_regex = r"https:\/\/drive.google.com\/file\/d\/([^\/]+)\/"
-    for img in soup.find_all('img'):
-        img['width'] = '100%'
-        search = re.search(drive_regex, img["src"])
-        if search is not None:
-            src_id = search.group(1)
-            img['src'] = f"https://drive.google.com/thumbnail?id={src_id}&sz=w1000"
-    html_content = str(soup)
-    return Markup(markdown.markdown(html_content))
 
 # Send to list
 @bp.route('/', methods=["GET", "POST"])

@@ -1,6 +1,11 @@
 from wtforms import ValidationError
 import pytz
 from datetime import datetime, timedelta
+import markdown
+from markupsafe import Markup
+from bs4 import BeautifulSoup
+import re
+from flask import render_template
 
 state_dict : dict[str, str] = {
     "AK": "Alaska",
@@ -121,3 +126,22 @@ def later_than_now(_form, field):
     our_timezone = pytz.timezone("America/New_York")
     if datetime.now().astimezone(our_timezone) + timedelta(minutes=5) > our_timezone.localize(field.data):
         raise ValidationError("Date must be later than 5 minutes from now")
+
+# HTML content of email given text content
+# Replace google drive links with thumbnail links
+def email_content(content):
+    html_content = markdown.markdown(content)
+    soup = BeautifulSoup(html_content, 'html.parser')
+    drive_regex = r"https:\/\/drive.google.com\/file\/d\/([^\/]+)\/"
+    for img in soup.find_all('img'):
+        img['width'] = '100%'
+        search = re.search(drive_regex, img["src"])
+        if search is not None:
+            src_id = search.group(1)
+            img['src'] = f"https://drive.google.com/thumbnail?id={src_id}&sz=w1000"
+    html_content = str(soup)
+    return Markup(markdown.markdown(html_content))
+
+def rendered_email(content):
+    html_content = email_content(content)
+    return render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
