@@ -142,6 +142,6 @@ def email_content(content):
     html_content = str(soup)
     return Markup(markdown.markdown(html_content))
 
-def rendered_email(content):
+def rendered_email(content, unsubscribe=True):
     html_content = email_content(content)
-    return render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
+    return render_template("email/mailing_list.html", html_content=html_content, social_links=social_links, unsubscribe=unsubscribe)

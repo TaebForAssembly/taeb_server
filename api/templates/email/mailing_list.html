@@ -28,9 +28,11 @@
                 {%endfor%}
                 </tr>
             </table>
+            {% if unsubscribe %}
             <table style="margin: auto; padding-bottom: 1rem"><tr><td>
                 <a href="{%raw%}{{{RESEND_UNSUBSCRIBE_URL}}}{%endraw%}" style="color:white">Unsubscribe here</a>
             </td></tr></table>
+            {% endif %}
         </td>
     </tr>
 </table>

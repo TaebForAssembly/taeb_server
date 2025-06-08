@@ -55,10 +55,10 @@ def add_volunteer(args):
 
     # Send email to user
     params: resend.Emails.SendParams = {
-        "from": "Freshta Taeb <onboarding@taebforassembly.com>",
+        "from": "Freshta Taeb <events@taebforassembly.com>",
         "to": [args["email"]],
         "subject": "Volunteer Onboarding",
-        "html": rendered_email(email_content)
+        "html": rendered_email(email_content, unsubscribe=False)
     }
     email_success = True
     try:
@@ -66,10 +66,29 @@ def add_volunteer(args):
     except resend.exceptions.ResendError:
         email_success = False
 
+    # send email notification to Frank
+    email_content = f"""<p>The volunteer form has been filled out by {args["first_name"]} {args["last_name"]}</p>
+    <p><b>Email:</b> {args["email"]}</p>
+    <p><b>Phone:</b> {args["email"]}</p>
+    <a href="https://taeb-server.vercel.app/view/volunteers/{response.data[0]["id"]}">More info</a>
+    """
+    params: resend.Emails.SendParams = {
+        "from": "Onboarding <events@taebforassembly.com>",
+        "to": ["frankb.ogrod@gmail.com"],
+        "subject": f"{args["first_name"]} {args["last_name"]} has filled out the Volunteer Form",
+        "html": email_content
+    }
+    notification_success = True
+    try:
+        resend.Emails.send(params)
+    except resend.exceptions.ResendError:
+        notification_success = False
+
     # send back response
     return {
         "success" : True,
         "email_success": email_success,
+        "notification_success": notification_success,
         "data" : response.data
     }
 
