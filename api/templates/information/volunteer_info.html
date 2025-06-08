@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
+{% block header %}
+  <h1>{% block title %}View Volunteer{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+{% if volunteer %}
+  <div class="view_content">
+    <div class="inside">
+        <p><b>Name: </b>{{volunteer.first_name}} {{volunteer.last_name}}</p>
+        <p><b>Address: </b>
+            {{volunteer.address1}}
+            {% if volunteer.address2 %}, {{volunteer.address2}}{% endif %}
+            , {{volunteer.city}}
+            , {{volunteer.state}}
+            , {{volunteer.zip}}
+        </p>
+        <p><b>Email: </b>{{volunteer.email}}</p>
+        <p><b>Phone Number: </b>{{volunteer.phone}}</p>
+        <b>Tasks: </b>
+        <ul>
+            {% for task in volunteer.tasks %}
+            <li>{{task}}</li>
+            {% endfor %}
+        </ul>
+
+        {% if volunteer.personal %}
+        <b>Personal Information:</b>
+        <p>{{volunteer.personal}}</p>
+        {% endif %}
+        
+        <b>Availability:</b>
+        <p>{{volunteer.availability}}</p>
+
+        <p><b>Date Form Filled:</b> {{volunteer.created_at}}</p>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
