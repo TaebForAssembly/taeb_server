@@ -27,8 +27,8 @@ def login():
             )
             return redirect("/mailing_list")
         except AuthApiError:
-            return render_template('authentication/login.html', form=form, error="Login Error")
-    return render_template('authentication/login.html', form=form)
+            return render_template('authentication/login.html', form=form, error="Login Error", signed_out=True)
+    return render_template('authentication/login.html', form=form, signed_out=True)
 
 @bp.route('/logout', methods=["POST"])
 def logout():
