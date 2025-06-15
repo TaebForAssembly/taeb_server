@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+{% endblock %}
+
+{% block header %}
+  <nav>
+    <h1>Taeb Server</h1>
+    <ul>
+      <li><a href="/mailing_list">Mailing List</a></li>
+      <li><a href="/view/volunteers">Volunteer List</a></li>
+      {% if true %}
+      <li>
+        <form method="post" action="/logout">
+          <input type="submit" value="Log-out">
+        </form>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <main>
+    {% block page_content %}{% endblock %}
+  </main>
+{% endblock %}
