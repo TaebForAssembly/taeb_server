@@ -96,16 +96,16 @@ form button, input[type=submit] {
   background-color: #DFF0D8 !important;
   border: 1px solid #DFF0D8 !important;
 }
-.parsley-success i, .parsley-success label i, .parsley-success p i {
-  color: #888888 !important;
-  background-color: rgba(223, 240, 216, 0) !important;
-  border: 1px solid #DFF0D8 !important;
-}
 
 .parsley-error, .parsley-error label, .parsley-error p {
   color: #B94A48 !important;
   background-color: #F2DEDE !important;
   border: 1px solid #EED3D7 !important;
+}
+.parsley-error label, .parsley-error p, .parsley-error label label, .parsley-error label p, .parsley-error p label, .parsley-error p p {
+  color: #B94A48 !important;
+  background-color: #F2DEDE !important;
+  border: 1px solid #F2DEDE !important;
 }
 
 body {
