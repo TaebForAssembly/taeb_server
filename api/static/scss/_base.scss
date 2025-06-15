@@ -1,0 +1,53 @@
+$primary-color: #012852;
+$secondary-color: #FCB806;
+$font-stack: "Raleway", sans-serif;
+
+@mixin font($weight: 400, $style: normal) {
+    font-family: $font-stack;
+    font-optical-sizing: auto;
+    font-weight: $weight;
+    font-style: $style;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    background-color: rgba(0,0,0,0);
+    border: 1px solid white;
+    outline: none;
+    transition: background-color 0.1s;
+    color: white;
+    font-size: large;
+    box-sizing: border-box;
+
+    &.partial {
+        border-radius: 2rem 0 0 2rem;
+    }
+
+    &:focus {
+        border: 1px solid #555;
+    }
+
+    &:focus, &:hover {
+        background-color: rgba(0,0,0,0.25);
+    }
+}
+
+
+button, input[type=submit] {
+    background-color: #FDB907;
+    color: black;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 2rem;
+    transition: background-color 0.1s;
+
+    &.partial {
+        border-radius: 0 2rem 2rem 0;
+    }
+
+    &:hover {
+        background-color: #ca890f;
+    }
+}

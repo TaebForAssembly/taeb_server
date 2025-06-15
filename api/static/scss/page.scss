@@ -1,0 +1,117 @@
+@use 'base';
+
+body {
+    background-color: base.$primary-color;
+    margin: 0;
+    @include base.font();
+}
+
+li, p, label {
+    color: white;
+}
+
+h1 {
+    color: base.$secondary-color;
+}
+
+nav {
+    padding: 2rem;
+    box-shadow: 0rem 0.1rem 1rem black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+
+    h1 {
+        margin: 0;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        flex-shrink: 0;
+
+        li {
+            margin: auto;
+        }
+    }
+}
+
+header {
+    text-align: center;
+}
+
+main {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+a {
+    color: white;
+
+    &:hover {
+        color: lightgrey;
+    }
+}
+
+.content {
+    display: flex;
+    width: 100%;
+
+    &:not(.wide) {
+        max-width: 500px;
+    }
+
+    &.wide {
+        max-width: 1000px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    
+    form {
+        color: white;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    
+    a, td {
+        color: black;
+    }
+
+    th {
+        text-align: center;
+        background-color: base.$secondary-color;
+    }
+
+    td, th {
+        padding: 0.5rem;
+    }
+
+    tr:nth-child(odd) { background-color: white; }
+    tr:nth-child(even) { background-color: lightgrey; }
+}
+
+.inside {
+    background-color: lightgrey;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 1rem;;
+    
+    p, b, li {
+        color: black;
+    }
+}

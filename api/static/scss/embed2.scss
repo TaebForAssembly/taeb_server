@@ -1,0 +1,24 @@
+@use 'base';
+
+@mixin parsley($color, $background, $border) {
+    color: $color !important;
+    background-color: $background !important;
+    border: 1px solid $border !important;
+}
+
+.parsley-success {
+    @include parsley(#468847, #DFF0D8, #D6E9C6);
+}
+.parsley-error {
+    @include parsley(#B94A48, #F2DEDE, #EED3D7);
+}
+
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+input, button, .success_message, textarea {
+  @include base.font();
+}
