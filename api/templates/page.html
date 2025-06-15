@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page.css') }}">
+{% endblock %}
+
+{% block header %}
+  <nav>
+    <h1>Taeb Server</h1>
+    <ul>
+      {% if not signed_out %}
+      <li><a href="/mailing_list">Mailing List</a></li>
+      <li><a href="/view/volunteers">Volunteer List</a></li>
+      <li>
+        <form method="post" action="/logout">
+          <input type="submit" value="Log-out">
+        </form>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="content">
+      {% if (form and form.errors.items()) or errors or error %}
+      <div class="message-container">
+        Errors
+        <ul>
+          {% if form %}
+          {% for field, errors in form.errors.items() %}
+          <li>
+            {{ form[field].label }}: {{ ', '.join(errors) }}
+          </li>
+          {% endfor %}
+          {% endif %}
+
+          {% for error in errors %}
+          <li>{{error}}</li>
+          {% endfor %}
+          
+          {% if error %}
+          <li>{{error}}</li>
+          {% endif %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+
+    {% block page_content %}{% endblock %}
+  </main>
+{% endblock %}

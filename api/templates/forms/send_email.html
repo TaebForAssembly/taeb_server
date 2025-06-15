@@ -1,6 +1,7 @@
 {% extends 'form.html' %}
 
 {% block header %}
+  {{ super() }}
   <h1>{% block title %}Send to mailing list{% endblock %}</h1>
 {% endblock %}
 
@@ -36,17 +37,17 @@
 
   <form method="post" autocomplete="off" onkeydown="return preventSubmitOnEnter(event)" onsubmit="return confirmSubmit(event)">
     {{ form.csrf_token }}
-    {{ form.subject.label }} {{ form.subject(size=20) }}
-    {{ form.content.label }} {{ form.content(size=20) }}
-    {{ form.datetime.label }} {{ form.datetime(size=20) }}
-    {{ form.confirm.label }} {{ form.confirm(size=50) }}
+    <div class="form-group">{{ form.subject.label }} {{ form.subject(size=20, class="form-control") }}</div>
+    <div class="form-group">
+      <div>{{ form.content.label }} <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" title="Markdown Reference">(?)</a></div>
+      {{ form.content(size=20, class="form-control large") }}
+    </div>
+    <div class="form-group">{{ form.datetime.label }} {{ form.datetime(size=20, class="form-control") }}</div>
+    <div class="form-group horizontal">{{ form.confirm.label }} {{ form.confirm(size=50, class="form-control") }}</div>
     
-    <input type="submit" formaction="preview" formtarget="_blank" formmethod="get" value="Preview Email">
-    <br>
-    <input type="submit" value="Send to List">
-  </form>
-
-  <form method="post" action="/logout">
-    <input type="submit" value="Log-out">
+    <div class="form-group horizontal">
+      <input type="submit" formaction="preview" formtarget="_blank" formmethod="get" value="Preview Email">
+      <input type="submit" value="Send to List">  
+    </div>
   </form>
 {% endblock %}

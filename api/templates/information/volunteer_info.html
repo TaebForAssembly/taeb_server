@@ -1,16 +1,13 @@
-{% extends 'base.html' %}
-
-{% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-{% endblock %}
+{% extends 'page.html' %}
 
 {% block header %}
+  {{ super() }}
   <h1>{% block title %}View Volunteer{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 {% if volunteer %}
-  <div class="view_content">
+  <div class="content wide">
     <div class="inside">
         <p><b>Name: </b>{{volunteer.first_name}} {{volunteer.last_name}}</p>
         <p><b>Address: </b>

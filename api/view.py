@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, jsonify
-from .db import supabase_admin
+from flask import Blueprint, render_template, redirect, url_for
+from .db import supabase_admin, signed_in
 from supabase import PostgrestAPIError
 from datetime import datetime
 
@@ -12,6 +12,10 @@ def formatTasks(volunteer):
 
 @bp.route("/volunteers", methods=["GET"])
 def view_volunteers():
+    # ensure user has access
+    if not signed_in():
+        return redirect(url_for("auth.login"))
+    
     volunteers = []
     try:
         response = (
@@ -28,6 +32,10 @@ def view_volunteers():
 
 @bp.route("/volunteers/<id>", methods=["GET"])
 def view_volunteer(id):
+    # ensure user has access
+    if not signed_in():
+        return redirect(url_for("auth.login"))
+    
     volunteer = None
     try:
         response = (
@@ -36,9 +44,13 @@ def view_volunteer(id):
             .eq("id", id)
             .execute()
         )
+        if len(response.data) == 0:
+            raise KeyError
         volunteer = response.data[0]
         volunteer = formatTasks(volunteer)
     except PostgrestAPIError:
         pass
+    except KeyError:
+        return render_template("information/volunteer_info.html", error="User not found")
 
     return render_template("information/volunteer_info.html", volunteer=volunteer)
