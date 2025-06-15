@@ -12,13 +12,13 @@
     label, p {
         @include parsley(#468847, #DFF0D8, #DFF0D8);
     }
-
-    i {
-        @include parsley(#888888, #dff0d800, #DFF0D8);
-    }
 }
 .parsley-error, .parsley-error label, .parsley-error p {
     @include parsley(#B94A48, #F2DEDE, #EED3D7);
+
+    label, p {
+        @include parsley(#B94A48, #F2DEDE, #F2DEDE);
+    }
 }
 
 
