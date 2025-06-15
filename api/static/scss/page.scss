@@ -6,9 +6,6 @@ body {
     @include base.font();
 }
 
-li, p, label {
-    color: white;
-}
 
 h1 {
     color: base.$secondary-color;
@@ -74,32 +71,6 @@ a {
     table {
         width: 100%;
     }
-
-    
-    form {
-        color: white;
-        width: 500px;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: flex-start;
-
-        textarea {
-            resize: vertical;
-            height: 20rem;
-            min-height: 20rem;
-        }
-
-        input[type=checkbox] {
-            width: 1.5rem;
-            height: 1.5rem;
-            display: inline;
-        }
-
-        input[type=submit] {
-            flex-grow: 1;
-        }
-    }
 }
 
 table {
@@ -135,7 +106,7 @@ table {
 }
 
 
-input, label, textarea {
+input:not([type=submit]), label, textarea {
     @include base.font(400, normal);
 }
 
@@ -144,9 +115,7 @@ h1 {
 }
 
 
-button, input[type=submit] {
-    @include base.font(600, normal);
-}
+
 
 .form-group {
     width: 100%;
@@ -160,10 +129,9 @@ button, input[type=submit] {
     }
 }
 
-label {
-    font-size: large;
-}
 
-input {
-    font-size: normal;
+
+
+form label {
+    font-size: larger;
 }

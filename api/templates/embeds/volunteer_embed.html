@@ -69,37 +69,38 @@
         <textarea name="availability" class="form-control" required minlength="1" maxlength="2000"></textarea>
     </label>
 
-    <label>Which tasks would you like to participate in? <i>(click at least one)</i></label>
-    <section id="task-selector">
-        <label style="font-size: larger;">
-            <input
-                type="checkbox" name="tasks" value="canvassing" class="task-selector"
-                required
-                data-parsley-mincheck="1"
-                data-parsley-class-handler="#task-selector"
-                data-parsley-errors-container="#task-selector-error-container"
-            />
-            Canvassing
-        </label>
-        <label style="font-size: larger;">
-            <input type="checkbox" name="tasks" value="phone_banking" class="task-selector"/>
-            Phone Banking
-        </label>
-        <label style="font-size: larger;">
-            <input type="checkbox" name="tasks" value="event_coordination" class="task-selector"/>
-            Event Coordination
-        </label>
-        <label style="font-size: larger;">
-            <input type="checkbox" name="tasks" value="lawn_sign_delivery"class="task-selector"/>
-            Lawn Sign Delivery
-        </label>
-        <label style="font-size: larger;">
-            <input type="checkbox" name="tasks" value="meet_and_greet_host" class="task-selector"/>
-            Meet and Greet Host
-        </label>
-        <div id="task-selector-error-container"></div>
-    </section>
-
+    <label>
+        Which tasks would you like to participate in? <i>(click at least one)</i>
+        <section id="task-selector">
+            <label>
+                <input
+                    type="checkbox" name="tasks" value="canvassing" class="task-selector"
+                    required
+                    data-parsley-mincheck="1"
+                    data-parsley-class-handler="#task-selector"
+                    data-parsley-errors-container="#task-selector-error-container"
+                />
+                <p>Canvassing</p>
+            </label>
+            <label>
+                <input type="checkbox" name="tasks" value="phone_banking" class="task-selector"/>
+                <p>Phone Banking</p>
+            </label>
+            <label>
+                <input type="checkbox" name="tasks" value="event_coordination" class="task-selector"/>
+                <p>Event Coordination</p>
+            </label>
+            <label>
+                <input type="checkbox" name="tasks" value="lawn_sign_delivery"class="task-selector"/>
+                <p>Lawn Sign Delivery</p>
+            </label>
+            <label>
+                <input type="checkbox" name="tasks" value="meet_and_greet_host" class="task-selector"/>
+                <p>Meet and Greet Host</p>
+            </label>
+            <div id="task-selector-error-container"></div>
+        </section>
+    </label>
     
     <div style="display: flex; flex-direction: row; gap: 1rem;">
         <button type="submit">Submit</button>

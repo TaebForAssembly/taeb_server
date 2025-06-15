@@ -35,6 +35,57 @@ button:hover, input[type=submit]:hover {
   background-color: #ca890f;
 }
 
+li, p, label {
+  color: white;
+}
+
+form {
+  color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+form textarea {
+  resize: vertical;
+}
+form textarea.large {
+  height: 20rem;
+  min-height: 20rem;
+}
+form textarea:not(.large) {
+  height: 10rem;
+  min-height: 10rem;
+}
+form input[type=checkbox] {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline;
+  outline: none;
+}
+form input[type=submit] {
+  flex-grow: 1;
+}
+form h1 {
+  margin: 0;
+}
+
+i {
+  color: lightgray;
+}
+
+.center {
+  text-align: center;
+}
+
+form button, input[type=submit] {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
 body {
   background-color: #012852;
   margin: 0;
@@ -42,10 +93,6 @@ body {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-}
-
-li, p, label {
-  color: white;
 }
 
 h1 {
@@ -106,27 +153,6 @@ a:hover {
 .content table {
   width: 100%;
 }
-.content form {
-  color: white;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-.content form textarea {
-  resize: vertical;
-  height: 20rem;
-  min-height: 20rem;
-}
-.content form input[type=checkbox] {
-  width: 1.5rem;
-  height: 1.5rem;
-  display: inline;
-}
-.content form input[type=submit] {
-  flex-grow: 1;
-}
 
 table {
   border-collapse: collapse;
@@ -159,7 +185,7 @@ table tr:nth-child(even) {
   color: black;
 }
 
-input, label, textarea {
+input:not([type=submit]), label, textarea {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -170,13 +196,6 @@ h1 {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   font-weight: 800;
-  font-style: normal;
-}
-
-button, input[type=submit] {
-  font-family: "Raleway", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
   font-style: normal;
 }
 
@@ -191,12 +210,8 @@ button, input[type=submit] {
   align-items: center;
 }
 
-label {
-  font-size: large;
-}
-
-input {
-  font-size: normal;
+form label {
+  font-size: larger;
 }
 
 /*# sourceMappingURL=page.css.map */

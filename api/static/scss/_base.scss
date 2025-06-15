@@ -51,3 +51,57 @@ button, input[type=submit] {
         background-color: #ca890f;
     }
 }
+
+li, p, label {
+    color: white;
+}
+
+form {
+    color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+
+    textarea {
+        resize: vertical;
+        &.large {
+            height: 20rem;
+            min-height: 20rem;
+        }
+
+        &:not(.large) {
+            height: 10rem;
+            min-height: 10rem;
+        }
+    }
+
+    
+    input[type=checkbox] {
+        width: 1.5rem;
+        height: 1.5rem;
+        display: inline;
+        outline: none;
+    }
+
+    input[type=submit] {
+        flex-grow: 1;
+    }
+
+    h1 {
+        margin: 0;
+    }
+}
+
+i {
+    color: lightgray;
+}
+
+.center {
+    text-align: center;
+}
+
+form button, input[type=submit] {
+    @include font(600, normal);
+}
