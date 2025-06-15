@@ -129,6 +129,8 @@ main {
   display: flex;
   width: 100%;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 a {
@@ -143,6 +145,7 @@ a:hover {
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;
+  flex-direction: column;
 }
 .content:not(.wide) {
   max-width: 500px;
@@ -180,6 +183,7 @@ table tr:nth-child(even) {
   width: 100%;
   padding: 1rem;
   border-radius: 1rem;
+  box-sizing: border-box;
 }
 .inside p, .inside b, .inside li {
   color: black;
@@ -212,6 +216,12 @@ h1 {
 
 form label {
   font-size: larger;
+}
+
+.message-container {
+  color: white;
+  font-size: larger;
+  margin-bottom: 1rem;
 }
 
 /*# sourceMappingURL=page.css.map */

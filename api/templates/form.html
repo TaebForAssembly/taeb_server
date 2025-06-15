@@ -2,32 +2,6 @@
 
 {% block page_content %}
   <div class="content">
-    {% if form %}
-    {% for field, errors in form.errors.items() %}
-    <div class="alert alert-error">
-        {{ form[field].label }}: {{ ', '.join(errors) }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    
-    {% if error %}
-    <div class="alert alert-error">
-        {{error}}
-    </div>
-    {% endif %}
-
-    {% if errors %}
-    <ul>
-      {% for error_message in errors %}
-        <li class="error-message">{{ error_message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
-
     {% block form_content %}
     {% endblock %}
   </div>

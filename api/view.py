@@ -44,9 +44,13 @@ def view_volunteer(id):
             .eq("id", id)
             .execute()
         )
+        if len(response.data) == 0:
+            raise KeyError
         volunteer = response.data[0]
         volunteer = formatTasks(volunteer)
     except PostgrestAPIError:
         pass
+    except KeyError:
+        return render_template("information/volunteer_info.html", error="User not found")
 
     return render_template("information/volunteer_info.html", volunteer=volunteer)

@@ -23,6 +23,40 @@
 
 {% block content %}
   <main>
+    <div class="content">
+      {% if (form and form.errors.items()) or errors or error %}
+      <div class="message-container">
+        Errors
+        <ul>
+          {% if form %}
+          {% for field, errors in form.errors.items() %}
+          <li>
+            {{ form[field].label }}: {{ ', '.join(errors) }}
+          </li>
+          {% endfor %}
+          {% endif %}
+          
+          {% for error in errors %}
+          <li>{{error}}</li>
+          {% endfor %}
+          {% if error %}
+          <li>{{error}}</li>
+          {% endif %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+
     {% block page_content %}{% endblock %}
   </main>
 {% endblock %}
