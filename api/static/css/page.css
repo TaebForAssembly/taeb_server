@@ -94,7 +94,8 @@ a:hover {
 .content {
   display: flex;
   width: 100%;
-  margin: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 .content:not(.wide) {
   max-width: 500px;
