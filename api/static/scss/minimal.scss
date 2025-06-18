@@ -1,15 +1,13 @@
 @use 'base';
 
+li, p, label {
+    color: unset;
+}
+
 body {
     background-color: base.$primary-color;
     margin: 0;
     @include base.font();
-}
-
-
-h1 {
-    color: base.$secondary-color;
-    @include base.font(800, normal);
 }
 
 nav {
@@ -37,16 +35,13 @@ nav {
     }
 }
 
-header {
-    text-align: center;
+header h1, nav h1 {
+    color: base.$secondary-color;
+    @include base.font(800, normal);
 }
 
-main {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+header h1 {
+    text-align: center;
 }
 
 a {
@@ -58,18 +53,31 @@ a {
 }
 
 .content {
+    h1 {
+        color: base.$secondary-color;
+        @include base.font(800, normal);
+    }
+}
+
+
+.content {
     display: flex;
     width: 100%;
     padding: 1rem;
     box-sizing: border-box;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    color: white;
 
     &:not(.wide) {
         max-width: 500px;
     }
 
     &.wide {
-        max-width: 1500px;
+        max-width: 1000px;
     }
 
     table {
@@ -77,49 +85,10 @@ a {
     }
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: none;
-    
-    a, td {
-        color: black;
-    }
-
-    th {
-        background-color: base.$secondary-color;
-    }
-
-    td, th {
-        padding: 0.5rem;
-        text-overflow: '';
-        overflow: hidden;
-        white-space: nowrap;
-        min-width: none;
-        text-align: left;
-    }
-
-    tr:nth-child(odd) { background-color: white; }
-    tr:nth-child(even) { background-color: lightgrey; }
-}
-
-.inside {
-    background-color: white;
-    width: 100%;
+.preview {
     padding: 1rem;
-    border-radius: 1rem;;
-    box-sizing: border-box;
-    
-    p, b, li {
-        color: black;
-    }
+    background-color: white;
 }
-
-
-input:not([type=submit]), label, textarea {
-    @include base.font(400, normal);
-}
-
 
 .form-group {
     width: 100%;
@@ -133,8 +102,8 @@ input:not([type=submit]), label, textarea {
     }
 }
 
-form label {
-    font-size: larger;
+.form-group-fill {
+    flex-grow: 1;
 }
 
 .message-container, .flashes {
