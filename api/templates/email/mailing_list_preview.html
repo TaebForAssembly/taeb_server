@@ -1,16 +1,27 @@
-{% extends 'form.html' %}
+{% extends 'page.html' %}
+
 
 {% block header %}
+  {{ super() }}
   <h1>{% block title %}Send Preview Email{% endblock %}</h1>
 {% endblock %}
 
-{% block form_content %}
-<form method="post">
-    {{ form.csrf_token }}
-    {{ form.email.label }} {{ form.email(size=20) }}
-    <input type="submit" value="Send">
-</form>
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/minimal.css') }}">
+{% endblock %}
 
-<p><b>Subject:</b> {{subject}}</p>
-{% include 'email/mailing_list.html' %}
+{% block page_content %}
+<div class="content">
+  <form method="post">
+    {{ form.csrf_token }}
+    {{ form.email.label }}
+    {{ form.email(size=20, class="form-group-fill form-control", placeholder="Recipient...") }}
+    <input type="submit" value="Send" style="width: 100%;">
+  </form>
+  <p><b>Subject:</b> {{subject}}</p>
+</div>
+
+<div class="preview">
+  {% include 'email/mailing_list.html' %}
+</div>
 {% endblock %}

@@ -86,20 +86,16 @@ form button, input[type=submit] {
   font-style: normal;
 }
 
+li, p, label {
+  color: unset;
+}
+
 body {
   background-color: #012852;
   margin: 0;
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
-  font-style: normal;
-}
-
-h1 {
-  color: #FCB806;
-  font-family: "Raleway", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 800;
   font-style: normal;
 }
 
@@ -125,16 +121,16 @@ nav ul li {
   margin: auto;
 }
 
-header {
-  text-align: center;
+header h1, nav h1 {
+  color: #FCB806;
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
 }
 
-main {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+header h1 {
+  text-align: center;
 }
 
 a {
@@ -144,65 +140,39 @@ a:hover {
   color: lightgrey;
 }
 
+.content h1 {
+  color: #FCB806;
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
 .content {
   display: flex;
   width: 100%;
   padding: 1rem;
   box-sizing: border-box;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  color: white;
 }
 .content:not(.wide) {
   max-width: 500px;
 }
 .content.wide {
-  max-width: 1500px;
+  max-width: 1000px;
 }
 .content table {
   width: 100%;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: none;
-}
-table a, table td {
-  color: black;
-}
-table th {
-  background-color: #FCB806;
-}
-table td, table th {
-  padding: 0.5rem;
-  text-overflow: "";
-  overflow: hidden;
-  white-space: nowrap;
-  min-width: none;
-  text-align: left;
-}
-table tr:nth-child(odd) {
-  background-color: white;
-}
-table tr:nth-child(even) {
-  background-color: lightgrey;
-}
-
-.inside {
-  background-color: white;
-  width: 100%;
+.preview {
   padding: 1rem;
-  border-radius: 1rem;
-  box-sizing: border-box;
-}
-.inside p, .inside b, .inside li {
-  color: black;
-}
-
-input:not([type=submit]), label, textarea {
-  font-family: "Raleway", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+  background-color: white;
 }
 
 .form-group {
@@ -216,8 +186,8 @@ input:not([type=submit]), label, textarea {
   align-items: center;
 }
 
-form label {
-  font-size: larger;
+.form-group-fill {
+  flex-grow: 1;
 }
 
 .message-container, .flashes {
@@ -227,4 +197,4 @@ form label {
   width: 100%;
 }
 
-/*# sourceMappingURL=page.css.map */
+/*# sourceMappingURL=minimal.css.map */

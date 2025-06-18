@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block page_content %}
+{% if volunteers %}
   <div class="content wide">
     <table>
     <thead>
@@ -14,6 +15,7 @@
         <th>City</th>
         <th>Email</th>
         <th>Tasks</th>
+        <th>Joined</th>
       </tr>
     </thead>
     <tbody>
@@ -23,9 +25,11 @@
           <td>{{volunteer.city}}, {{volunteer.state}}</td>
           <td>{{volunteer.email}}</td>
           <td>{{volunteer.tasks|join(", ")}}</td>
+          <td>{{volunteer.created_at}}</td>
         </tr>
       {% endfor %}
     </tbody>
     </table>
   </div>
+{% endif %}
 {% endblock %}
