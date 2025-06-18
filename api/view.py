@@ -5,9 +5,10 @@ from datetime import datetime
 
 bp = Blueprint('view', __name__, url_prefix='/view')
 
-def formatTasks(volunteer):
+def formatTasks(volunteer, show_time=True):
     volunteer["tasks"] = list(map(lambda t: t.replace("_", " ").title(), volunteer["tasks"]))
-    volunteer["created_at"] = datetime.strptime(volunteer["created_at"], "%Y-%m-%dT%H:%M:%S.%f+00:00").strftime("%m/%d/%Y at %I:%M %p")
+    time_string = "%m/%d/%Y at %I:%M %p" if show_time else "%m/%d/%Y"
+    volunteer["created_at"] = datetime.strptime(volunteer["created_at"], "%Y-%m-%dT%H:%M:%S.%f+00:00").strftime(time_string)
     return volunteer
 
 @bp.route("/volunteers", methods=["GET"])
@@ -20,13 +21,14 @@ def view_volunteers():
     try:
         response = (
             supabase_admin.table("volunteers")
-            .select("*")
+            .select("first_name, last_name, city, state, email, tasks, created_at, id")
+            .order("created_at", desc=True)
             .execute()
         )
         volunteers = response.data
-        volunteers = list(map(formatTasks, volunteers))
+        volunteers = list(map(lambda v: formatTasks(v, False), volunteers))
     except PostgrestAPIError:
-        pass
+        return render_template("information/volunteer_table.html", error="Server Error: Volunteers not Found")
 
     return render_template("information/volunteer_table.html", volunteers=volunteers)
 
