@@ -97,9 +97,14 @@ social_links = [
     },
     # X
     {
-        "url": "https://www.tiktok.com/@taeb4assembly",
+        "url": "https://x.com/TaebForAssembly",
         "image": "https://img.icons8.com/?size=30&id=phOKFKYpe00C&format=png&color=012852"
     },
+    # threads
+    {
+        "url": "https://www.threads.net/@taeb4assembly",
+        "image": "https://img.icons8.com/?size=30&id=AS2a6aA9BwK3&format=png&color=012852"
+    }
 ]
 
 def trim_inputs(in_data):
