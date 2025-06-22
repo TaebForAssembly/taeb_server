@@ -67,10 +67,6 @@ form h1 {
   margin: 1.25rem 0 0 0;
 }
 
-i {
-  color: lightgray;
-}
-
 .center {
   text-align: center;
 }
@@ -173,6 +169,10 @@ label ul, div ul {
   display: flex;
   flex-direction: row;
   width: 100%;
+}
+
+i {
+  color: lightgray;
 }
 
 /*# sourceMappingURL=embed2.css.map */
