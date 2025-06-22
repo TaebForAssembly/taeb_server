@@ -35,10 +35,6 @@ button:hover, input[type=submit]:hover {
   background-color: #ca890f;
 }
 
-li, p, label {
-  color: white;
-}
-
 form {
   color: white;
   width: 100%;
@@ -225,6 +221,10 @@ form label {
   font-size: large;
   margin-bottom: 1rem;
   width: 100%;
+}
+
+li, p, label {
+  color: white;
 }
 
 /*# sourceMappingURL=page.css.map */
