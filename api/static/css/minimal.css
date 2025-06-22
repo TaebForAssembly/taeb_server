@@ -35,10 +35,6 @@ button:hover, input[type=submit]:hover {
   background-color: #ca890f;
 }
 
-li, p, label {
-  color: white;
-}
-
 form {
   color: white;
   width: 100%;
@@ -71,10 +67,6 @@ form h1 {
   margin: 1.25rem 0 0 0;
 }
 
-i {
-  color: lightgray;
-}
-
 .center {
   text-align: center;
 }
@@ -84,10 +76,6 @@ form button, input[type=submit] {
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
-}
-
-li, p, label {
-  color: unset;
 }
 
 body {
@@ -131,13 +119,6 @@ header h1, nav h1 {
 
 header h1 {
   text-align: center;
-}
-
-a {
-  color: white;
-}
-a:hover {
-  color: lightgrey;
 }
 
 .content h1 {
