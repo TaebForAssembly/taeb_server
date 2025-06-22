@@ -39,8 +39,14 @@
   </div>
 
   <div class="content">
+    <form id="check_volunteer_form" style="margin-bottom: 1rem;">
+      <div class="form-group horizontal">
+        <label for="volunteer-contacted" style="user-select: none;">Contacted</label>
+        <input type="checkbox" checked={{volunteer.contacted}} id="volunteer-contacted" name="contacted"/>
+      </div>
+    </form>
     <form id="delete_volunteer_form" data-id="{{volunteer.id}}">
-      <input type="submit" value="Delete User" style="width:100%;"/>
+      <input type="submit" value="Delete User" style="width:100%;" name="contacted"/>
     </form>
     <p id="delete_volunteer_form_error"></p>
   </div>
@@ -67,6 +73,23 @@
       .catch(() => document.getElementById("delete_volunteer_form_error").innerHTML = "Error: Server Error");
       
       return false;
+    }
+
+    const checkbox = document.getElementById("volunteer-contacted");
+    checkbox.onchange = function(e) {
+      const value = checkbox.checked;
+    
+      checkbox.setAttribute("disabled", "");
+
+      const data = new FormData();
+      data.append("contacted", false);
+
+      fetch(`/volunteer/${form.getAttribute("data-id")}`, {
+        method : "PATCH",
+        body : data
+      })
+      .then(response => response.json())
+      .then(response => console.log(response));
     }
   </script>
 {% endif %}

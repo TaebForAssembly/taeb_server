@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 import resend.exceptions
 from webargs.flaskparser import abort, parser, use_args, use_kwargs
 from .data import state_dict, activities, trim_inputs, no_duplicates, rendered_email
@@ -116,6 +116,12 @@ def delete_volunteer(id):
     return {
         "success" : True,
         "message" : "Volunteer Deleted Successfully"
+    }
+
+@bp.route("/<id>", methods=["PATCH"])
+def edit_volunteer(id):
+    return {
+        "message": f"{request.form.get("contacted")}"
     }
 
 @bp.errorhandler(422)

@@ -21,7 +21,7 @@ def view_volunteers():
     try:
         response = (
             supabase_admin.table("volunteers")
-            .select("first_name, last_name, city, state, email, tasks, created_at, id")
+            .select("first_name, last_name, city, state, email, tasks, created_at, id, contacted")
             .order("created_at", desc=True)
             .execute()
         )
