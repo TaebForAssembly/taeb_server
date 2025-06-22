@@ -144,6 +144,8 @@ def email_content(content):
         if search is not None:
             src_id = search.group(1)
             img['src'] = f"https://drive.google.com/thumbnail?id={src_id}&sz=w1000"
+    for anchor in soup.find_all('a'):
+        anchor['style'] = "color: #175fad"
     html_content = str(soup)
     return Markup(markdown.markdown(html_content))
 
