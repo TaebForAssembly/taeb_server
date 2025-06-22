@@ -3,7 +3,7 @@ import resend.exceptions
 from webargs.flaskparser import abort, parser, use_args, use_kwargs
 from .data import state_dict, activities, trim_inputs, no_duplicates, rendered_email
 from marshmallow import Schema, fields, validate, pre_load, ValidationError
-from .db import supabase_admin
+from .db import supabase_admin, signed_in
 from supabase import PostgrestAPIError
 import resend
 
@@ -90,6 +90,32 @@ def add_volunteer(args):
         "email_success": email_success,
         "notification_success": notification_success,
         "data" : response.data
+    }
+
+@bp.route("/<id>", methods=["DELETE"])
+def delete_volunteer(id):
+    # ensure user has access
+    if not signed_in():
+        return {
+            "success" : False,
+            "message": "Not signed in"
+        }
+    
+    response = (
+        supabase_admin.table("volunteers")
+        .delete()
+        .eq("id", id)
+        .execute()
+    )
+    if len(response.data) == 0:
+        return {
+            "success" : False,
+            "message" : "Volunteer not found"
+        }
+    
+    return {
+        "success" : True,
+        "message" : "Volunteer Deleted Successfully"
     }
 
 @bp.errorhandler(422)
