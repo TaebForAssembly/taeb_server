@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
 from .db import supabase_admin, signed_in
 from supabase import PostgrestAPIError
 from datetime import datetime
@@ -21,7 +21,7 @@ def view_volunteers():
     try:
         response = (
             supabase_admin.table("volunteers")
-            .select("first_name, last_name, city, state, email, tasks, created_at, id")
+            .select("first_name, last_name, city, state, email, tasks, created_at, id, contacted")
             .order("created_at", desc=True)
             .execute()
         )

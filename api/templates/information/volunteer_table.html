@@ -16,6 +16,7 @@
         <th>Email</th>
         <th>Tasks</th>
         <th>Joined</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +27,13 @@
           <td>{{volunteer.email}}</td>
           <td>{{volunteer.tasks|join(", ")}}</td>
           <td>{{volunteer.created_at}}</td>
+          <td>
+            {% if volunteer.contacted %}
+              &#10004;
+            {% else %}
+              &#10006;
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>

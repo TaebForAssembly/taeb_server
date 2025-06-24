@@ -9,33 +9,102 @@
 {% if volunteer %}
   <div class="content wide">
     <div class="inside">
-        <p><b>Name: </b>{{volunteer.first_name}} {{volunteer.last_name}}</p>
-        <p><b>Address: </b>
-            {{volunteer.address1}}
-            {% if volunteer.address2 %}, {{volunteer.address2}}{% endif %}
-            , {{volunteer.city}}
-            , {{volunteer.state}}
-            , {{volunteer.zip}}
-        </p>
-        <p><b>Email: </b>{{volunteer.email}}</p>
-        <p><b>Phone Number: </b>{{volunteer.phone}}</p>
-        <b>Tasks: </b>
-        <ul>
-            {% for task in volunteer.tasks %}
-            <li>{{task}}</li>
-            {% endfor %}
-        </ul>
+      <p><b>Name: </b>{{volunteer.first_name}} {{volunteer.last_name}}</p>
+      <p><b>Address: </b>
+        {{volunteer.address1}}
+        {% if volunteer.address2 %}, {{volunteer.address2}}{% endif %}
+        , {{volunteer.city}}
+        , {{volunteer.state}}
+        , {{volunteer.zip}}
+      </p>
+      <p><b>Email: </b>{{volunteer.email}}</p>
+      <p><b>Phone Number: </b>{{volunteer.phone}}</p>
+      <b>Tasks: </b>
+      <ul>
+        {% for task in volunteer.tasks %}
+        <li>{{task}}</li>
+        {% endfor %}
+      </ul>
 
-        {% if volunteer.personal %}
-        <b>Personal Information:</b>
-        <p>{{volunteer.personal}}</p>
-        {% endif %}
-        
-        <b>Availability:</b>
-        <p>{{volunteer.availability}}</p>
+      {% if volunteer.personal %}
+      <b>Personal Information:</b>
+      <p>{{volunteer.personal}}</p>
+      {% endif %}
+      
+      <b>Availability:</b>
+      <p>{{volunteer.availability}}</p>
 
-        <p><b>Date Form Filled:</b> {{volunteer.created_at}}</p>
+      <p><b>Date Form Filled:</b> {{volunteer.created_at}}</p>
     </div>
   </div>
+
+  <div class="content">
+    <form id="check_volunteer_form" style="margin-bottom: 1rem;">
+      <div class="form-group horizontal">
+        <label for="volunteer-contacted" style="user-select: none;">Contacted</label>
+        <input type="checkbox" checked={{volunteer.contacted}} id="volunteer-contacted" name="contacted"/>
+      </div>
+    </form>
+    <form id="delete_volunteer_form" data-id="{{volunteer.id}}">
+      <input type="submit" value="Delete User" style="width:100%;" name="contacted"/>
+    </form>
+    <p id="delete_volunteer_form_error"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("delete_volunteer_form");
+
+    form.onsubmit = function () {
+      if (!confirm("Are you sure you want to delete this user?")) return false;
+
+      document.getElementById("delete_volunteer_form_error").innerHTML = "";
+
+      fetch(`/volunteer/${form.getAttribute("data-id")}`, {
+        method: "DELETE"
+      })
+      .then(response => response.json())
+      .then(({success, message}) => {
+        if (success) {
+          alert(message);
+          window.location.replace("/view/volunteers");
+        }
+        else document.getElementById("delete_volunteer_form_error").innerHTML = `Error: ${message}`;
+      })
+      .catch(() => document.getElementById("delete_volunteer_form_error").innerHTML = "Error: Server Error");
+      
+      return false;
+    }
+
+    const checkbox = document.getElementById("volunteer-contacted");
+    checkbox.onchange = function(e) {
+      const value = checkbox.checked;
+    
+      checkbox.setAttribute("disabled", "");
+
+      const data = new FormData();
+      data.append("contacted", false);
+      document.getElementById("delete_volunteer_form_error").innerHTML = '';
+
+      fetch(`/volunteer/${form.getAttribute("data-id")}`, {
+        method : "PATCH",
+        body : data
+      })
+      .then(response => response.json())
+      .then(({success, message}) => {
+        
+        let newChecked = checkbox.getAttribute("checked").toLowerCase() === "true";
+        if (!success){
+          newChecked = !newChecked;
+          document.getElementById("delete_volunteer_form_error").innerHTML = `Server Error: ${message}`;
+          checkbox.checked = newChecked;
+        }
+        
+        checkbox.removeAttribute("disabled");
+      }).catch(() => {
+        checkbox.removeAttribute("disabled");
+        document.getElementById("delete_volunteer_form_error").innerHTML = `Server Error`;
+      });
+    }
+  </script>
 {% endif %}
 {% endblock %}
