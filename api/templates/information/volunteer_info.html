@@ -42,7 +42,7 @@
     <form id="check_volunteer_form" style="margin-bottom: 1rem;">
       <div class="form-group horizontal">
         <label for="volunteer-contacted" style="user-select: none;">Contacted</label>
-        <input type="checkbox" checked={{volunteer.contacted}} id="volunteer-contacted" name="contacted"/>
+        <input type="checkbox" {% if volunteer.contacted %}checked{%endif%} id="volunteer-contacted" name="contacted"/>
       </div>
     </form>
     <form id="delete_volunteer_form" data-id="{{volunteer.id}}">
@@ -82,7 +82,7 @@
       checkbox.setAttribute("disabled", "");
 
       const data = new FormData();
-      data.append("contacted", false);
+      data.append("contacted", value);
       document.getElementById("delete_volunteer_form_error").innerHTML = '';
 
       fetch(`/volunteer/${form.getAttribute("data-id")}`, {
@@ -90,19 +90,21 @@
         body : data
       })
       .then(response => response.json())
-      .then(({success, message}) => {
+      .then(({success, message, ...data}) => {
         
-        let newChecked = checkbox.getAttribute("checked").toLowerCase() === "true";
+        let newChecked = checkbox.checked;
         if (!success){
           newChecked = !newChecked;
-          document.getElementById("delete_volunteer_form_error").innerHTML = `Server Error: ${message}`;
+          document.getElementById("delete_volunteer_form_error").innerHTML = `Error: ${message}`;
           checkbox.checked = newChecked;
         }
+        console.log(data);
         
         checkbox.removeAttribute("disabled");
-      }).catch(() => {
+      }).catch((error) => {
         checkbox.removeAttribute("disabled");
-        document.getElementById("delete_volunteer_form_error").innerHTML = `Server Error`;
+        console.error(error);
+        document.getElementById("delete_volunteer_form_error").innerHTML = `Error: Server Error`;
       });
     }
   </script>
