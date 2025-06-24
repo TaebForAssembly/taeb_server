@@ -125,7 +125,7 @@ def delete_volunteer(id):
 def edit_volunteer(args, id):
     response = (
         supabase_admin.table("volunteers")
-        .update({"contacted" : not args["contacted"]})
+        .update({"contacted" : args["contacted"]})
         .eq("id", id)
         .execute()
     )
@@ -133,12 +133,14 @@ def edit_volunteer(args, id):
     if len(response.data) == 0:
         return {
             "success" : False,
-            "message" : "Volunteer not found"
+            "message" : "Volunteer not found",
+            "contacted" : args["contacted"]
         }
 
     return {
         "success" : True,
-        "message" : "Volunteer Updated Successfully"
+        "message" : "Volunteer Updated Successfully",
+        "contacted" : args["contacted"]
     }
 
 @bp.errorhandler(422)
