@@ -83,13 +83,27 @@
 
       const data = new FormData();
       data.append("contacted", false);
+      document.getElementById("delete_volunteer_form_error").innerHTML = '';
 
       fetch(`/volunteer/${form.getAttribute("data-id")}`, {
         method : "PATCH",
         body : data
       })
       .then(response => response.json())
-      .then(response => console.log(response));
+      .then(({success, message}) => {
+        
+        let newChecked = checkbox.getAttribute("checked").toLowerCase() === "true";
+        if (!success){
+          newChecked = !newChecked;
+          document.getElementById("delete_volunteer_form_error").innerHTML = `Server Error: ${message}`;
+          checkbox.checked = newChecked;
+        }
+        
+        checkbox.removeAttribute("disabled");
+      }).catch(() => {
+        checkbox.removeAttribute("disabled");
+        document.getElementById("delete_volunteer_form_error").innerHTML = `Server Error`;
+      });
     }
   </script>
 {% endif %}

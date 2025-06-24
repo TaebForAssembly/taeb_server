@@ -119,9 +119,26 @@ def delete_volunteer(id):
     }
 
 @bp.route("/<id>", methods=["PATCH"])
-def edit_volunteer(id):
+@use_args({
+    "contacted" : fields.Bool()
+}, location='form')
+def edit_volunteer(args, id):
+    response = (
+        supabase_admin.table("volunteers")
+        .update({"contacted" : not args["contacted"]})
+        .eq("id", id)
+        .execute()
+    )
+
+    if len(response.data) == 0:
+        return {
+            "success" : False,
+            "message" : "Volunteer not found"
+        }
+
     return {
-        "message": f"{request.form.get("contacted")}"
+        "success" : True,
+        "message" : "Volunteer Updated Successfully"
     }
 
 @bp.errorhandler(422)
