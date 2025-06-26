@@ -3,10 +3,23 @@
 {% block content %}
 <p hidden class="success_message">Thanks for subscribing to our newsletter!</p>
 <form id="taeb_server_mailing_list_form_embed" class="raleway">
-    <label for="mailing_list_email">Join our mailing list!</label>
-    <div class="email_input_container">
-        <input id="mailing_list_email" placeholder="Enter Email Here..." type="email" class="form-control partial" name="email" data-parsley-trigger="change" required="" data-parsley-errors-container="#email_errors_container">
-        <button class="partial">Submit</button>
+    <h1 for="mailing_list_email">Join our mailing list!</h1>
+    <div class="form_flex">
+        <label>
+            First Name
+            <input type="text" name="first_name" class="form-control" required minlength="1" maxlength="50"/>
+        </label>
+        <label>
+            Last Name 
+            <input type="text" name="last_name" class="form-control" required  minlength="1" maxlength="50"/>
+        </label>
+    </div>
+    <div style="width: 100%">
+        <label for="mailing_list_email">Email</label>
+        <div class="email_input_container">
+            <input id="mailing_list_email" type="email" class="form-control partial" name="email" data-parsley-trigger="change" required="" data-parsley-errors-container="#email_errors_container">
+            <button class="partial">Submit</button>
+        </div>
     </div>
     <div id="email_errors_container"></div>
 </form>
