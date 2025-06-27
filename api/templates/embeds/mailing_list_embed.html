@@ -27,7 +27,7 @@
     let form = $('#taeb_server_mailing_list_form_embed');
 
     async function postEmail() {
-        const response = await fetch(`https://taeb-server.vercel.app/mailing_list/users`, {
+        const response = await fetch(`/mailing_list/users`, {
             method: "POST",
             body : new FormData(document.getElementById("taeb_server_mailing_list_form_embed"))
         }).then((response) => response.json());
@@ -36,7 +36,7 @@
 
     $(function () {
         form.parsley().on('form:submit', function() {
-            let emailField = form.find("input").parsley();
+            let emailField = form.find("#mailing_list_email").parsley();
 
             postEmail().then(({success, message}) => {
                 if (success) {

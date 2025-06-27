@@ -1,14 +1,14 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from flask import Blueprint, render_template, redirect, url_for, flash, jsonify
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DateTimeLocalField, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional, Regexp
 
-from webargs.flaskparser import parser, use_kwargs
-from marshmallow import fields, validate
+from webargs.flaskparser import parser, use_args, use_kwargs
+from marshmallow import fields, validate, Schema, pre_load
 
 from .db import signed_in
-from .data import social_links, later_than_now, email_content
+from .data import social_links, later_than_now, email_content, trim_inputs
 
 import resend.exceptions
 import resend
@@ -111,12 +111,23 @@ def check_email():
     return render_template("email/mailing_list_preview.html", html_content=html_content, content=content, subject=subject, social_links=social_links, form=form)
 
 # Add user to mailing list
+class MailingListUserSchema(Schema):
+    first_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    last_name = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    email = fields.Email(required=True)
+
+    @pre_load
+    def trim_load(self, in_data, **kwargs):
+        return trim_inputs(in_data)
+
 @bp.route('/users', methods=["POST"])
-@use_kwargs({ "email": fields.Email(required=True) }, location='form')
-def add_user(email):
+@use_kwargs(MailingListUserSchema(), location='form')
+def add_user(first_name, last_name, email):
     # send to mailing list
     try:
         params: resend.Contacts.CreateParams = {
+            "first_name" : first_name,
+            "last_name" : last_name,
             "email": email,
             "unsubscribed": False,
             "audience_id": "a17a345c-1182-4915-a3b8-47121580b9a6",
