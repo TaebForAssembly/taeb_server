@@ -3,10 +3,23 @@
 {% block content %}
 <p hidden class="success_message">Thanks for subscribing to our newsletter!</p>
 <form id="taeb_server_mailing_list_form_embed" class="raleway">
-    <label for="mailing_list_email">Join our mailing list!</label>
-    <div class="email_input_container">
-        <input id="mailing_list_email" placeholder="Enter Email Here..." type="email" class="form-control partial" name="email" data-parsley-trigger="change" required="" data-parsley-errors-container="#email_errors_container">
-        <button class="partial">Submit</button>
+    <h1 for="mailing_list_email">Join our mailing list!</h1>
+    <div class="form_flex">
+        <label>
+            First Name
+            <input type="text" name="first_name" class="form-control" required minlength="1" maxlength="50"/>
+        </label>
+        <label>
+            Last Name 
+            <input type="text" name="last_name" class="form-control" required  minlength="1" maxlength="50"/>
+        </label>
+    </div>
+    <div style="width: 100%">
+        <label for="mailing_list_email">Email</label>
+        <div class="email_input_container">
+            <input id="mailing_list_email" type="email" class="form-control partial" name="email" data-parsley-trigger="change" required="" data-parsley-errors-container="#email_errors_container">
+            <button class="partial">Submit</button>
+        </div>
     </div>
     <div id="email_errors_container"></div>
 </form>
@@ -14,7 +27,7 @@
     let form = $('#taeb_server_mailing_list_form_embed');
 
     async function postEmail() {
-        const response = await fetch(`https://taeb-server.vercel.app/mailing_list/users`, {
+        const response = await fetch(`/mailing_list/users`, {
             method: "POST",
             body : new FormData(document.getElementById("taeb_server_mailing_list_form_embed"))
         }).then((response) => response.json());
@@ -23,7 +36,7 @@
 
     $(function () {
         form.parsley().on('form:submit', function() {
-            let emailField = form.find("input").parsley();
+            let emailField = form.find("#mailing_list_email").parsley();
 
             postEmail().then(({success, message}) => {
                 if (success) {
