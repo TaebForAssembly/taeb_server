@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 .form-control.partial {
-  border-radius: 2rem 0 0 2rem;
+  border-radius: 1rem 0 0 1rem;
 }
 .form-control:focus {
   border: 1px solid #555;
@@ -29,7 +29,7 @@ button, input[type=submit] {
   transition: background-color 0.1s;
 }
 button.partial, input[type=submit].partial {
-  border-radius: 0 2rem 2rem 0;
+  border-radius: 0 1rem 1rem 0;
 }
 button:hover, input[type=submit]:hover {
   background-color: #ca890f;
