@@ -74,7 +74,7 @@ def add_volunteer(args):
     """
     params: resend.Emails.SendParams = {
         "from": "Onboarding <events@taebforassembly.com>",
-        "to": ["frankb.ogrod@gmail.com"],
+        "to": ["events@taebforassembly.com"],
         "subject": f"{args["first_name"]} {args["last_name"]} has filled out the Volunteer Form",
         "html": email_content
     }
