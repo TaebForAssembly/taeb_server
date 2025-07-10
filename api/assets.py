@@ -1,6 +1,5 @@
-from flask import Blueprint, send_file, send_from_directory, render_template, request, flash, redirect
-from os import path
-from .db import supabase, supabase_admin
+from flask import Blueprint, send_file, send_from_directory, render_template, redirect, url_for
+from .db import supabase, supabase_admin, signed_in
 import requests
 from io import BytesIO
 
@@ -14,6 +13,10 @@ class UploadFileForm(FlaskForm):
     image = FileField(validators=[FileRequired()])
 @bp.route('/', methods=["GET", "POST"])
 def upload_file():
+    # ensure user has access
+    if not signed_in():
+        return redirect(url_for("auth.login"))
+    
     form = UploadFileForm()
 
     if form.validate_on_submit():
