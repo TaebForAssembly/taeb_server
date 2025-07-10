@@ -77,7 +77,7 @@ activities = [
 social_links = [
     # facebook
     {
-        "url": "https://www.facebook.com/people/Freshta-Taeb/pfbid0pbEhVeAoyC1zNs4txi2AXAyxEFzweoWXjc68M7W6dDjDsDycDqwCqJaZCSGrsS7hl/",
+        "url": "https://www.facebook.com/taebforassembly/",
         "image": "https://img.icons8.com/?size=30&id=118466&format=png&color=012852"
     },
     # instagram
