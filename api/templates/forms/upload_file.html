@@ -1,0 +1,22 @@
+{% extends 'form.html' %}
+
+{% block header %}
+    {{ super() }}
+    <h1>{% block title %}Upload file{% endblock %}</h1>
+{% endblock %}
+
+{% block form_content %}
+    {% if image_url %}
+    <div style="margin-bottom: 2rem;">
+        <p>Image successfully uploaded:</p>
+        <a href="{{image_url}}" target="_blank" class="yellow">{{ image_url }}</a>
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.image.label }}
+        {{ form.image(size=20, class="form-control") }}
+        <input type="submit" value="Upload image">
+    </form>
+{% endblock %}

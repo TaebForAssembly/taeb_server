@@ -19,7 +19,7 @@ def login():
         email = form.email.data
         password = form.password.data
         try:
-            response = supabase.auth.sign_in_with_password(
+            supabase.auth.sign_in_with_password(
                 {
                     "email": email, 
                     "password": password,
