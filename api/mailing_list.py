@@ -96,7 +96,7 @@ def check_email():
         params: resend.Emails.SendParams = {
             "from": "Freshta Taeb <test@taebforassembly.com>",
             "to": [form.email.data],
-            "subject": f"[TEST]: {subject}",
+            "subject": f"{subject}",
             "html": render_template("email/mailing_list.html", html_content=html_content, social_links=social_links)
         }
 
