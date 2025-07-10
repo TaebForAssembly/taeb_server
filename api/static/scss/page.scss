@@ -1,4 +1,6 @@
 @use 'base';
+@use 'sass:color';
+
 
 body {
     background-color: base.$primary-color;
@@ -146,4 +148,12 @@ form label {
 
 li, p, label {
     color: white;
+}
+
+a.yellow {
+    color: base.$secondary-color;
+
+    &:hover {
+        color: color.adjust(base.$secondary-color, $lightness: -10%, $hue: -5);
+    }
 }

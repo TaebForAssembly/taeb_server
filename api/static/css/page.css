@@ -223,4 +223,11 @@ li, p, label {
   color: white;
 }
 
+a.yellow {
+  color: #FCB806;
+}
+a.yellow:hover {
+  color: rgb(204.5357142857, 131.8392857143, 2.4642857143);
+}
+
 /*# sourceMappingURL=page.css.map */
