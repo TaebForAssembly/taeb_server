@@ -77,33 +77,33 @@ activities = [
 social_links = [
     # facebook
     {
+        "name": "facebook",
         "url": "https://www.facebook.com/taebforassembly/",
-        "image": "https://img.icons8.com/?size=30&id=118466&format=png&color=012852"
     },
     # instagram
     {
+        "name": "instagram",
         "url": "https://www.instagram.com/taeb4assembly/",
-        "image": "https://img.icons8.com/?size=30&id=32309&format=png&color=012852"
     },
     # linkedin
     {
+        "name": "linkedin",
         "url": "https://www.linkedin.com/company/taeb-for-assembly/posts/?feedView=all",
-        "image": "https://img.icons8.com/?size=30&id=8808&format=png&color=012852"
     },
     # tiktok
     {
+        "name": "tiktok",
         "url": "https://www.tiktok.com/@taeb4assembly",
-        "image": "https://img.icons8.com/?size=30&id=118638&format=png&color=012852"
     },
     # X
     {
+        "name": "x",
         "url": "https://x.com/TaebForAssembly",
-        "image": "https://img.icons8.com/?size=30&id=phOKFKYpe00C&format=png&color=012852"
     },
     # threads
     {
+        "name": "threads",
         "url": "https://www.threads.net/@taeb4assembly",
-        "image": "https://img.icons8.com/?size=30&id=AS2a6aA9BwK3&format=png&color=012852"
     }
 ]
 

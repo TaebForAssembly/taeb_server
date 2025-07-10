@@ -2,7 +2,7 @@
     <tr style="background-color: #012852; margin: 0; padding: 0;">
         <td><table style="margin: auto; padding: 0.75rem"><tr><td>
             <a href="https://www.taebforassembly.com/" target="_blank" style="margin: auto;">
-                <img src="https://images.squarespace-cdn.com/content/v1/67716ef37c97f016c188523b/ca791956-47c3-4b03-ab07-ef038d197c1a/logo+transparent.png?format=1500w" style="max-height: 125px">
+                <img src="https://internal.taebforassembly.com/static/assets/logo.png" style="max-height: 125px">
             </a>
         </td></tr></table></td>
     </tr>
@@ -21,8 +21,8 @@
                 <tr>
                 {%for link in social_links%}
                     <td style="background-color: #FEB908; border-radius: 0.25rem; padding: 0.1rem">
-                        <a href={{link["url"]}} target="_blank">
-                            <img src={{link["image"]}}>
+                        <a href="{{link['url']}}" target="_blank">
+                            <img src="https://internal.taebforassembly.com/static/assets/{{link['name']}}_icon.png">
                         </a>
                     </td>
                 {%endfor%}
