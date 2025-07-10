@@ -6,11 +6,18 @@ from io import BytesIO
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
+from wtforms import ValidationError
+
+import re
 
 bp = Blueprint('assets', __name__, url_prefix='/assets', static_folder='static/assets')
 
 class UploadFileForm(FlaskForm):
     image = FileField(validators=[FileRequired()])
+
+    def validate_image(form, field):
+        if not re.search(r".(jpg|jpeg|webp|png|gif)$", field.data.filename):
+            raise ValidationError("Invalid filename")
 @bp.route('/', methods=["GET", "POST"])
 def upload_file():
     # ensure user has access
@@ -23,6 +30,7 @@ def upload_file():
         f = form.image.data
         filename = secure_filename(f.filename)
         filetype = filename.split(".")[-1]
+        filetype = filetype if filetype != "jpg" else "jpeg"
         (
             supabase_admin.storage
             .from_("assets")
