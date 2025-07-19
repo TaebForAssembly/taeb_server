@@ -157,3 +157,40 @@ a.yellow {
         color: color.adjust(base.$secondary-color, $lightness: -10%, $hue: -5);
     }
 }
+
+.image_list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+
+    .image_row {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        background-color: lightgray;
+        padding: 0.75rem;
+        border-radius: 1rem;
+
+        & > img {
+            --dimension: 7rem;
+            width: var(--dimension);
+            height: var(--dimension);
+            object-fit: contain;
+            background-color: black;
+        }
+
+        div:has(a) {
+            flex-grow: 1;
+            a {
+                color: base.$primary-color;
+                &:hover { color: color.adjust(base.$primary-color, $lightness: 40%, $hue: 10deg) }
+            }
+        }
+
+        button {
+            align-self: flex-start;
+            padding: 0.5rem 0.75rem;
+        }
+    }
+}

@@ -21,18 +21,22 @@
 }
 
 button, input[type=submit] {
-  background-color: #FDB907;
+  background-color: #FCB806;
   color: black;
   border: none;
   padding: 0.75rem 1.25rem;
   border-radius: 2rem;
   transition: background-color 0.1s;
+  cursor: pointer;
 }
 button.partial, input[type=submit].partial {
   border-radius: 0 1rem 1rem 0;
 }
 button:hover, input[type=submit]:hover {
-  background-color: #ca890f;
+  background-color: rgb(219.6535714286, 134.3503571429, 2.6464285714);
+}
+button:active, input[type=submit]:active {
+  background-color: rgb(184.3785714286, 91.5228571429, 2.2214285714);
 }
 
 form {
@@ -228,6 +232,41 @@ a.yellow {
 }
 a.yellow:hover {
   color: rgb(204.5357142857, 131.8392857143, 2.4642857143);
+}
+
+.image_list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+.image_list .image_row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  background-color: lightgray;
+  padding: 0.75rem;
+  border-radius: 1rem;
+}
+.image_list .image_row > img {
+  --dimension: 7rem;
+  width: var(--dimension);
+  height: var(--dimension);
+  object-fit: contain;
+  background-color: black;
+}
+.image_list .image_row div:has(a) {
+  flex-grow: 1;
+}
+.image_list .image_row div:has(a) a {
+  color: #012852;
+}
+.image_list .image_row div:has(a) a:hover {
+  color: rgb(34.686746988, 103.1987951807, 252.313253012);
+}
+.image_list .image_row button {
+  align-self: flex-start;
+  padding: 0.5rem 0.75rem;
 }
 
 /*# sourceMappingURL=page.css.map */

@@ -21,18 +21,22 @@
 }
 
 button, input[type=submit] {
-  background-color: #FDB907;
+  background-color: #FCB806;
   color: black;
   border: none;
   padding: 0.75rem 1.25rem;
   border-radius: 2rem;
   transition: background-color 0.1s;
+  cursor: pointer;
 }
 button.partial, input[type=submit].partial {
   border-radius: 0 1rem 1rem 0;
 }
 button:hover, input[type=submit]:hover {
-  background-color: #ca890f;
+  background-color: rgb(219.6535714286, 134.3503571429, 2.6464285714);
+}
+button:active, input[type=submit]:active {
+  background-color: rgb(184.3785714286, 91.5228571429, 2.2214285714);
 }
 
 form {
