@@ -8,11 +8,15 @@
 {% block form_content %}
     {% if image_url %}
     <div style="margin-bottom: 2rem;">
-        <p>Image successfully uploaded:</p>
-        <a href="{{image_url}}" target="_blank" class="yellow">{{ image_url }}</a>
+        <p>Image successfully uploaded, url copied to clipboard</p>
+        <a href="{{image_url}}" target="_blank" class="yellow" id="image_link">{{ image_url }}</a>
     </div>
+    <script>
+        const image_link = $("#image_link").attr("href");
+        navigator.clipboard.writeText(image_link);
+    </script>
     {% endif %}
-
+    
     <form method="post" enctype="multipart/form-data">
         {{ form.csrf_token }}
         {{ form.image.label }}

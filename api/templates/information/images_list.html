@@ -1,0 +1,53 @@
+{% extends 'page.html' %}
+
+{% block header %}
+  {{ super() }}
+  <h1>{% block title %}View Images{% endblock %}</h1>
+{% endblock %}
+
+{% block page_content %}
+<div class="content">
+    {% if images %}
+        <div class="image_list">
+        {% for image in images %}
+            <div class="image_row">
+                <img src="{{image['image_url']}}">
+                <div>
+                    <a href="{{image['asset_url']}}" target="_blank">{{image["filename"]}}</a>
+                </div>
+                <button data-url="{{image['asset_url']}}" class="copy_url_button">
+                    <img src="https://img.icons8.com/?size=20&id=85777&format=png&color=000000">
+                </button>
+                <button class="delete_image_button" data-filename="{{image['filename']}}">
+                    <img src="https://img.icons8.com/?size=20&id=85194&format=png&color=000000">
+                </button>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>No Images Found</p>
+    {% endif %}
+</div>
+
+<script>
+    $(".copy_url_button").on("click", function() {
+        const image_link = $(this).attr("data-url");
+        navigator.clipboard.writeText(image_link);
+    });
+
+    $(".delete_image_button").on("click", function() {
+        const image_name = $(this).attr("data-filename");
+
+        if (!confirm(`Are you sure you want to delete ${image_name}? This will break its use in any previous emails`)) return;
+        
+        fetch(`${image_name}`, {
+            method: "DELETE"
+        })
+        .then((response) => response.json())
+        .then(({success, message}) => {
+            alert(message);
+            if (success) location.reload();
+        });
+    });
+</script>
+{% endblock %}
