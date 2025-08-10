@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for
 from .db import supabase_admin, signed_in
 from supabase import PostgrestAPIError
 from datetime import datetime
