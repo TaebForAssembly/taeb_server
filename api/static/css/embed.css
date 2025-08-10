@@ -1,21 +1,112 @@
-input:not([type=checkbox]), label, textarea {
-    display: block;
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid white;
+  outline: none;
+  transition: background-color 0.1s;
+  color: white;
+  font-size: large;
+  box-sizing: border-box;
+}
+.form-control.partial {
+  border-radius: 1rem 0 0 1rem;
+}
+.form-control:focus {
+  border: 1px solid #555;
+}
+.form-control:focus, .form-control:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+button, input[type=submit] {
+  background-color: #FCB806;
+  color: black;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 2rem;
+  transition: background-color 0.1s;
+  cursor: pointer;
+}
+button.partial, input[type=submit].partial {
+  border-radius: 0 1rem 1rem 0;
+}
+button:hover, input[type=submit]:hover {
+  background-color: rgb(219.6535714286, 134.3503571429, 2.6464285714);
+}
+button:active, input[type=submit]:active {
+  background-color: rgb(184.3785714286, 91.5228571429, 2.2214285714);
+}
+
+form {
+  color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+form textarea {
+  resize: vertical;
+}
+form textarea.large {
+  height: 20rem;
+  min-height: 20rem;
+}
+form textarea:not(.large) {
+  height: 10rem;
+  min-height: 10rem;
+}
+form input[type=checkbox] {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline;
+  outline: none;
+}
+form input[type=submit] {
+  flex-grow: 1;
+}
+form h1 {
+  margin: 1.25rem 0 0 0;
+}
+
+.center {
+  text-align: center;
+}
+
+form button, input[type=submit] {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.parsley-success, .parsley-success label, .parsley-success p {
+  color: #468847 !important;
+  background-color: #DFF0D8 !important;
+  border: 1px solid #D6E9C6 !important;
+}
+.parsley-success label, .parsley-success p, .parsley-success label label, .parsley-success label p, .parsley-success p label, .parsley-success p p {
+  color: #468847 !important;
+  background-color: #DFF0D8 !important;
+  border: 1px solid #DFF0D8 !important;
+}
+
+.parsley-error, .parsley-error label, .parsley-error p {
+  color: #B94A48 !important;
+  background-color: #F2DEDE !important;
+  border: 1px solid #EED3D7 !important;
+}
+.parsley-error label, .parsley-error p, .parsley-error label label, .parsley-error label p, .parsley-error p label, .parsley-error p p {
+  color: #B94A48 !important;
+  background-color: #F2DEDE !important;
+  border: 1px solid #F2DEDE !important;
 }
 
 body {
-    padding: 0;
-    margin: 0;
-}
-
-.parsley-success {
-    color: #468847 !important;
-    background-color: #DFF0D8 !important;
-    border: 1px solid #D6E9C6 !important;
-}
-.parsley-error {
-    color: #B94A48 !important;
-    background-color: #F2DEDE !important;
-    border: 1px solid #EED3D7 !important;
+  padding: 0;
+  margin: 0;
 }
 
 .raleway, input, button, .success_message, textarea {
@@ -25,133 +116,68 @@ body {
   font-style: normal;
 }
 
-.form-control {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border-radius: 1rem;
-    background-color: rgba(0,0,0,0);
-    border: 1px solid white;
-    outline: none;
-    transition: background-color 0.1s;
-    color: white;
-    font-size: large;
-    box-sizing: border-box;
-}
-
-.form-control.partial {
-    border-radius: 2rem 0 0 2rem;
-}
-
-.form-control:focus {
-    border: 1px solid #555;
-}
-
-.form-control:focus, .form-control:hover {
-    background-color: rgba(0,0,0,0.25);
-}
-
-form {
-    color: white;
-    width: 500px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
-}
-
 .success_message {
-    margin: 0;
-    color: white;
-}
-
-.center {
-    text-align: center;
-}
-
-button {
-    background-color: #FDB907;
-    color: black;
-    border: none;
-    padding: 0.75rem 1.25rem;
-    border-radius: 2rem;
-    transition: background-color 0.1s;
-}
-
-button.partial {
-    border-radius: 0 2rem 2rem 0;
-}
-
-button:hover {
-    background-color: #ca890f;
-}
-
-body {
-    background-color: rgba(0,0,0,0);
-}
-
-.parsley-errors-list {
-    margin: 0;
-}
-
-
-button {
-    font-size: large;
-}
-
-label, p {
-    font-size: x-large;
-}
-
-label {
-    width: 100%;
-}
-
-form {
-    width: 100%;
-}
-
-.email_input_container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+  margin: 0;
+  color: white;
+  font-size: x-large;
 }
 
 .form_flex {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 1rem;
+}
+.form_flex label {
+  flex-grow: 1;
 }
 
-.form_flex div {
-    flex-grow: 1;
+label {
+  font-size: x-large;
+  width: 100%;
 }
 
-i {
-    color: lightgray;
-    font-weight: normal;
+ul {
+  font-size: large;
 }
 
-h1 {
-    margin: 1rem 0rem 0.5rem 0rem; 
+label p {
+  margin: auto;
 }
 
-textarea.form-control {
-    resize: none;
-    height: 7rem;
-    min-height: 3rem;
+input:not([type=checkbox]), label, textarea {
+  display: block;
 }
 
-textarea.form-control:focus {
-    resize: vertical;
+label > input + p {
+  display: inline;
+  font-size: 1.35rem;
+  user-select: none;
+}
+
+label input:last-of-type {
+  margin-top: 0.25rem;
+}
+
+label ul, div ul {
+  margin-top: 0.25rem;
+  margin-bottom: 0;
 }
 
 #task-selector {
-    padding: 1rem;
-    border-radius: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
-.error-message {
-    margin: 0.5rem;
-    color: #F2DEDE;
+.email_input_container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 0.25rem;
 }
+
+i {
+  color: lightgray;
+}
+
+/*# sourceMappingURL=embed.css.map */
