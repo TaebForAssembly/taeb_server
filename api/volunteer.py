@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 import resend.exceptions
-from webargs.flaskparser import abort, parser, use_args, use_kwargs
+from webargs.flaskparser import use_args
 from .data import state_dict, activities, trim_inputs, no_duplicates, rendered_email
-from marshmallow import Schema, fields, validate, pre_load, ValidationError
+from marshmallow import Schema, fields, validate, pre_load
 from .db import supabase_admin, signed_in
 from supabase import PostgrestAPIError
 import resend

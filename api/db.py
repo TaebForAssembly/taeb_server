@@ -1,5 +1,4 @@
-from flask import g
-from supabase import create_client, Client, ClientOptions
+from supabase import create_client, ClientOptions
 from gotrue.errors import AuthApiError
 import os
 

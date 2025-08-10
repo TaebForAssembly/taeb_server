@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DateTimeLocalField, EmailField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional, Regexp
 
-from webargs.flaskparser import parser, use_args, use_kwargs
+from webargs.flaskparser import parser, use_kwargs
 from marshmallow import fields, validate, Schema, pre_load
 
 from .db import signed_in
