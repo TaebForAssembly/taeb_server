@@ -8,11 +8,4 @@
 {% endif %}
 <b>Availability:</b>
 <p>{{volunteer.availability}}</p>
-<p><b>Address: </b>
-{{volunteer.address1}}
-{% if volunteer.address2 %}, {{volunteer.address2}}{% endif %}
-, {{volunteer.city}}
-, {{volunteer.state}}
-, {{volunteer.zip}}
-</p>
 <a href="https://taeb-server.vercel.app/view/volunteers/{{volunteer.id}}">View on internal site</a>
