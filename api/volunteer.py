@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
 import resend.exceptions
 from webargs.flaskparser import use_args
 from .data import state_dict, activities, trim_inputs, no_duplicates, rendered_email
@@ -67,11 +67,7 @@ def add_volunteer(args):
         email_success = False
 
     # send email notification to Frank
-    email_content = f"""<p>The volunteer form has been filled out by {args["first_name"]} {args["last_name"]}</p>
-    <p><b>Email:</b> {args["email"]}</p>
-    <p><b>Phone:</b> {args["email"]}</p>
-    <a href="https://taeb-server.vercel.app/view/volunteers/{response.data[0]["id"]}">More info</a>
-    """
+    email_content = render_template('information/volunteer_update.html', volunteer=args)
     params: resend.Emails.SendParams = {
         "from": "Onboarding <events@taebforassembly.com>",
         "to": ["events@taebforassembly.com"],

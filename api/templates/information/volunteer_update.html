@@ -1,0 +1,11 @@
+<p>The volunteer form has been filled out by {{volunteer.first_name}} {{volunteer.last_name}}</p>
+<p><b>Email:</b> {{volunteer.email}}</p>
+<p><b>Phone Number:</b> {{volunteer.phone}}</p>
+<p><b>Tasks:</b> {{volunteer.tasks|join(", ")}}</p>
+{% if volunteer.personal %}
+<b>Personal Information:</b>
+<p>{{volunteer.personal}}</p>
+{% endif %}
+<b>Availability:</b>
+<p>{{volunteer.availability}}</p>
+<a href="https://taeb-server.vercel.app/view/volunteers/{{volunteer.id}}">View on internal site</a>
