@@ -123,6 +123,12 @@ def delete_volunteer(id):
     "contacted" : fields.Bool()
 }, location='form')
 def edit_volunteer(args, id):
+    if not signed_in():
+        return {
+            "success" : False,
+            "message": "Not signed in"
+        }
+
     response = (
         supabase_admin.table("volunteers")
         .update({"contacted" : args["contacted"]})

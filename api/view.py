@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from .db import supabase_admin, signed_in
+from .db import supabase_admin, signed_in, supabase
 from supabase import PostgrestAPIError
 from datetime import datetime
 
@@ -56,3 +56,29 @@ def view_volunteer(id):
         return render_template("information/volunteer_info.html", error="User not found")
 
     return render_template("information/volunteer_info.html", volunteer=volunteer)
+
+@bp.route("/greeting", methods=["GET"])
+def hello_world():
+    try:
+        response = (
+            supabase_admin.table("content")
+            .select("content")
+            .eq("name", "greeting")
+            .execute()
+        )
+
+        if len(response.data) == 0:
+            return {
+                "success": False,
+                "message": "Data not found"
+            }
+
+        return {
+            "success": True,
+            "message": response.data[0]["content"]
+        }
+    except PostgrestAPIError:
+        return {
+            "success": False,
+            "message": "Error fetching content"
+        }
