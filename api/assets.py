@@ -95,6 +95,12 @@ def base_static(filename):
 
 @bp.route('/<filename>', methods=["DELETE"])
 def delete_static(filename):
+    if not signed_in():
+        return {
+            "success" : False,
+            "message": "Not signed in"
+        }
+    
     try:
         response = (
             supabase_admin.storage

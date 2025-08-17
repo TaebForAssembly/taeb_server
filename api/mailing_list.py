@@ -80,6 +80,9 @@ preview_schema = {
 }
 @bp.route('/preview', methods=["GET", "POST"])
 def check_email():
+    if not signed_in():
+        return redirect(url_for("auth.login"))
+
     # Perform validation on querystring
     try:
         args = parser.parse(preview_schema, location='querystring')
