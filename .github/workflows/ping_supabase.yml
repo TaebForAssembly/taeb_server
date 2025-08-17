@@ -1,0 +1,12 @@
+name: Ping Supabase to Prevent Pausing
+
+on:
+  schedule:
+    - cron: '0 14 * * SUN' # Runs at 9:00 AM every Monday and Thursday
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping server
+        run: curl https://internal.taebforassembly.com/view/greeting
