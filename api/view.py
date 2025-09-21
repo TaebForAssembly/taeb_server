@@ -11,6 +11,17 @@ def formatTasks(volunteer, show_time=True):
     volunteer["created_at"] = datetime.strptime(volunteer["created_at"], "%Y-%m-%dT%H:%M:%S.%f+00:00").strftime(time_string)
     return volunteer
 
+#Time formatting method for the following events:
+# Canvassing
+# Phone Banking
+#Convert given event start and end time to 12 hr format and return it
+def formatTimeTo12(event):
+    time_12hr = "%I:%M %p" 
+    event["start"] = datetime.strptime(event["start"], "%H:%M:%S").strftime(time_12hr)
+    event["end"] = datetime.strptime(event["end"], "%H:%M:%S").strftime(time_12hr)
+    return event
+
+#Volunteer Table
 @bp.route("/volunteers", methods=["GET"])
 def view_volunteers():
     # ensure user has access
@@ -32,6 +43,7 @@ def view_volunteers():
 
     return render_template("information/volunteer_table.html", volunteers=volunteers)
 
+#Specific Volunteer Route
 @bp.route("/volunteers/<id>", methods=["GET"])
 def view_volunteer(id):
     # ensure user has access
@@ -57,6 +69,55 @@ def view_volunteer(id):
 
     return render_template("information/volunteer_info.html", volunteer=volunteer)
 
+#Canvassing
+@bp.route("/canvassing", methods=["GET"]) #HTTP GET
+def view_canvassing():
+    # ensure user has access
+    if not signed_in():
+        return redirect(url_for("auth.login"))
+    
+    canvassing_events = []
+    try:
+        response = (
+            supabase_admin.table("canvassing")
+            .select("day, date, start, end, location, rsvp, created_at, id")
+            .order("id", desc=False)
+            .execute()
+        )
+        canvassing_events = response.data
+        #Use a lambda expression to format time to 12 HR format
+        canvassing_events = list(map(lambda e: formatTimeTo12(e), canvassing_events))
+    except PostgrestAPIError:
+        return render_template("information/canvassing_table.html", error="Server Error: Volunteers not Found")
+
+    return render_template("information/canvassing_table.html", canvassing_events=canvassing_events)
+
+#Phone banking
+@bp.route("/phone_banking", methods=["GET"]) #HTTP GET
+def view_phone_banking():
+    # ensure user has access
+    if not signed_in():
+        return redirect(url_for("auth.login"))
+    
+    phone_bankings = []
+    try:
+        response = (
+            supabase_admin.table("phone_banking")
+            .select("day, date, start, end, rsvp, created_at, id")
+            .order("id", desc=False)
+            .execute()
+        )
+        phone_bankings = response.data
+        #Use a lambda expression to format time to 12 HR format
+        phone_bankings = list(map(lambda e: formatTimeTo12(e), phone_bankings))
+    except PostgrestAPIError:
+        return render_template("information/phone_banking_table.html", error="Server Error: Volunteers not Found")
+
+    return render_template("information/phone_banking_table.html", phone_bankings=phone_bankings)
+
+
+
+#No html associated here
 @bp.route("/greeting", methods=["GET"])
 def hello_world():
     try:

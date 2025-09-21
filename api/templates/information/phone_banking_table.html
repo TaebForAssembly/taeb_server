@@ -1,0 +1,37 @@
+{% extends 'page.html' %}
+
+{% block header %}
+  {{ super() }}
+  <h1>{% block title %}View Phone Banking{% endblock %}</h1>
+{% endblock %}
+
+{% block page_content %}
+{% if phone_bankings %}
+  <div class="content wide">
+    <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>RSVP Link</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for phone_banking in phone_bankings %}
+        <tr>
+          <td>{{phone_banking.day}}</td>
+          <td>{{phone_banking.date}}</td>
+          <td>{{phone_banking.start}}</td>
+          <td>{{phone_banking.end}}</td>
+          <td><a href={{phone_banking.rsvp}}>RSVP Link</a></td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

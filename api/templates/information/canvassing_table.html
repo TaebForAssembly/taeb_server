@@ -1,0 +1,39 @@
+{% extends 'page.html' %}
+
+{% block header %}
+  {{ super() }}
+  <h1>{% block title %}View Canvassing{% endblock %}</h1>
+{% endblock %}
+
+{% block page_content %}
+{% if canvassing_events %}
+  <div class="content wide">
+    <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Location</th>
+        <th>RSVP Link</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for canvassing_event in canvassing_events %}
+        <tr>
+          <td>{{canvassing_event.day}}</td>
+          <td>{{canvassing_event.date}}</td>
+          <td>{{canvassing_event.start}}</td>
+          <td>{{canvassing_event.end}}</td>
+          <td>{{canvassing_event.location}}</td>
+          <td><a href={{canvassing_event.rsvp}}>RSVP Link</a></td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

@@ -74,6 +74,7 @@ activities = [
     "canvassing",
 ]
 
+
 social_links = [
     # facebook
     {
