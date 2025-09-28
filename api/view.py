@@ -21,6 +21,13 @@ def formatTimeTo12(event):
     event["end"] = datetime.strptime(event["end"], "%H:%M:%S").strftime(time_12hr)
     return event
 
+#Simplify date format
+def removeYear(event):
+    time_wo_year = "%m-%d"
+    event["date"] = datetime.strptime(event["date"], "%Y-%m-%d").strftime(time_wo_year)
+    return event
+
+
 #Volunteer Table
 @bp.route("/volunteers", methods=["GET"])
 def view_volunteers():
@@ -87,6 +94,7 @@ def view_canvassing():
         canvassing_events = response.data
         #Use a lambda expression to format time to 12 HR format
         canvassing_events = list(map(lambda e: formatTimeTo12(e), canvassing_events))
+        canvassing_events = list(map(lambda e: removeYear(e), canvassing_events))
     except PostgrestAPIError:
         return render_template("information/canvassing_table.html", error="Server Error: Volunteers not Found")
 
@@ -110,6 +118,7 @@ def view_phone_banking():
         phone_bankings = response.data
         #Use a lambda expression to format time to 12 HR format
         phone_bankings = list(map(lambda e: formatTimeTo12(e), phone_bankings))
+        phone_bankings = list(map(lambda e: removeYear(e), phone_bankings))
     except PostgrestAPIError:
         return render_template("information/phone_banking_table.html", error="Server Error: Volunteers not Found")
 

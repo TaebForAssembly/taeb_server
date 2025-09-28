@@ -11,10 +11,8 @@
     <table>
     <thead>
       <tr>
-        <th>Day</th>
-        <th>Date</th>
-        <th>Start</th>
-        <th>End</th>
+        <th>Day & Date</th>
+        <th>Start & End</th>
         <th>Location</th>
         <th>RSVP Link</th>
         <th></th>
@@ -23,10 +21,8 @@
     <tbody>
       {% for canvassing_event in canvassing_events %}
         <tr>
-          <td>{{canvassing_event.day}}</td>
-          <td>{{canvassing_event.date}}</td>
-          <td>{{canvassing_event.start}}</td>
-          <td>{{canvassing_event.end}}</td>
+          <td>{{canvassing_event.day}}<br>{{canvassing_event.date}}</td>
+          <td>{{canvassing_event.start}}<br>to<br>{{canvassing_event.end}}</td>
           <td>{{canvassing_event.location}}</td>
           <td><a href={{canvassing_event.rsvp}}>RSVP Link</a></td>
           <td></td>

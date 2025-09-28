@@ -5,7 +5,11 @@ import os
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 admin_key: str = os.environ.get("SUPABASE_ADMIN_KEY")
-supabase = create_client(url, key)
+supabase = create_client(
+    url, 
+    key,
+    options=ClientOptions(postgrest_client_timeout=10,
+    storage_client_timeout=10))
 supabase_admin = create_client(url, admin_key, options=ClientOptions(auto_refresh_token=False, persist_session=False))
 
 def get_db():
