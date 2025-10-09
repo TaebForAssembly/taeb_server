@@ -21,7 +21,7 @@
 }
 
 button, input[type=submit] {
-  background-color: #FCB806;
+  background-color: #fcba06;
   color: black;
   border: none;
   padding: 0.75rem 1.25rem;
@@ -29,6 +29,19 @@ button, input[type=submit] {
   transition: background-color 0.1s;
   cursor: pointer;
 }
+
+.rsvp {
+  background-color: #06cffc;
+  color: black;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 2rem;
+  transition: background-color 0.1s;
+  cursor: pointer;
+}
+
+
+
 button.partial, input[type=submit].partial {
   border-radius: 0 1rem 1rem 0;
 }
@@ -156,7 +169,9 @@ a:hover {
 .content table {
   width: 100%;
 }
-
+td {
+   border: 3px solid rgb(0, 34, 255);
+}
 table {
   border-collapse: collapse;
   width: 100%;

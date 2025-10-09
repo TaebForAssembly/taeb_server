@@ -17,8 +17,35 @@ def formatTasks(volunteer, show_time=True):
 #Convert given event start and end time to 12 hr format and return it
 def formatTimeTo12(event):
     time_12hr = "%I:%M %p" 
-    event["start"] = datetime.strptime(event["start"], "%H:%M:%S").strftime(time_12hr)
-    event["end"] = datetime.strptime(event["end"], "%H:%M:%S").strftime(time_12hr)
+    start_time_12_hr  = datetime.strptime(event["start"], "%H:%M:%S").strftime(time_12hr)
+    #Remove zeroes
+    start_time_HOUR = int(start_time_12_hr[0:2])
+    if start_time_HOUR < 10:
+        event["start"] = str(start_time_HOUR) + datetime.strptime(event["start"], "%H:%M:%S").strftime(":%M %p")
+    else:
+        event["start"] = start_time_12_hr
+    
+    end_time_12_hr  = datetime.strptime(event["end"], "%H:%M:%S").strftime(time_12hr)
+    #Remove zeroes
+    end_time_HOUR = int(end_time_12_hr[0:2])
+    if end_time_HOUR < 10:
+        event["end"] = str(end_time_HOUR) + datetime.strptime(event["end"], "%H:%M:%S").strftime(":%M %p")
+    else:
+        event["end"] = end_time_12_hr
+    return event
+
+#Format the day properly...
+def formatDay(event):
+    default_day_format = "%m-%d"
+    changed_day_format = "%b-%d"
+    with_abbreviated_month = datetime.strptime(event["date"] , default_day_format).strftime(changed_day_format)
+    #All month abbreviations are 3-characters long
+    day_number = int(with_abbreviated_month[4:6])
+    if day_number < 10:
+        event["date"] = with_abbreviated_month[0:4] + str(day_number)
+    else:
+        event["date"] = with_abbreviated_month
+
     return event
 
 #Simplify date format
@@ -95,6 +122,7 @@ def view_canvassing():
         #Use a lambda expression to format time to 12 HR format
         canvassing_events = list(map(lambda e: formatTimeTo12(e), canvassing_events))
         canvassing_events = list(map(lambda e: removeYear(e), canvassing_events))
+        canvassing_events = list(map(lambda e: formatDay(e) , canvassing_events))
     except PostgrestAPIError:
         return render_template("information/canvassing_table.html", error="Server Error: Volunteers not Found")
 
@@ -119,6 +147,7 @@ def view_phone_banking():
         #Use a lambda expression to format time to 12 HR format
         phone_bankings = list(map(lambda e: formatTimeTo12(e), phone_bankings))
         phone_bankings = list(map(lambda e: removeYear(e), phone_bankings))
+        phone_bankings = list(map(lambda e: formatDay(e) , phone_bankings))
     except PostgrestAPIError:
         return render_template("information/phone_banking_table.html", error="Server Error: Volunteers not Found")
 

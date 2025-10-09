@@ -9,21 +9,27 @@
 {% if phone_bankings %}
   <div class="content wide">
     <table>
+    <script>
+      function openSignUpForm(url)
+      {
+        window.open(url, "_blank")
+      }
+    </script>
     <thead>
       <tr>
-        <th>Day & Date</th>
-        <th>Start & End</th>
+        <th>Date</th>
+        <th>Time</th>
         <th>RSVP Link</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for phone_banking in phone_bankings %}
         <tr>
           <td>{{phone_banking.day}}<br>{{phone_banking.date}}</td>
-          <td>{{phone_banking.start}}<br>to<br>{{phone_banking.end}}</td>
-          <td><a href={{phone_banking.rsvp}}>RSVP Link</a></td>
-          <td></td>
+          <td>{{phone_banking.start}} - {{phone_banking.end}}</td>
+          <td>
+            <button class="rsvp" onclick="openSignUpForm('{{phone_banking.rsvp}}');">Sign Up</button>
+          </td>
         </tr>
       {% endfor %}
     </tbody>
